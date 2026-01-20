@@ -1,96 +1,78 @@
-import { Github, Twitter, Instagram, Linkedin, Mail } from "lucide-react";
+import { Instagram, Linkedin, Mail } from "lucide-react";
 
-const quickLinks = [
-  { href: "#home", label: "Home" },
-  { href: "#about", label: "About" },
-  { href: "#cells", label: "Cells" },
-  { href: "#auditions", label: "Apply" },
-];
+const navLinks = ["Home", "About", "Cells", "Aarohan"];
 
-const socialLinks = [
-  { icon: Github, href: "#", label: "GitHub" },
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Instagram, href: "#", label: "Instagram" },
-  { icon: Linkedin, href: "#", label: "LinkedIn" },
-  { icon: Mail, href: "#", label: "Email" },
-];
-
-const Footer = () => {
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
+export default function Footer() {
   return (
-    <footer className="py-16 relative">
-      {/* Section divider */}
-      <div className="section-divider mb-16" />
+    <footer className="relative overflow-hidden bg-black text-white">
+      {/* Vertical light bands */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-1/3 top-0 h-full w-40 bg-gradient-to-b from-purple-500/30 via-blue-600/40 to-transparent blur-3xl" />
+        <div className="absolute left-1/2 top-0 h-full w-32 bg-gradient-to-b from-blue-700/40 via-indigo-600/40 to-transparent blur-3xl" />
+      </div>
 
-      <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-3 gap-12 md:gap-8">
-          {/* Brand */}
-          <div className="text-center md:text-left">
-            <h3 className="text-2xl font-bold gradient-text mb-3">CCA</h3>
-            <p className="text-muted-foreground text-sm mb-4">
-              Centre For Cognitive Activities
-            </p>
-            <p className="text-muted-foreground text-sm">
-              Innovating today for a smarter tomorrow.
-            </p>
+      {/* Upper content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-24 pb-32">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
+          {/* Column 1 — Logo (1/2) */}
+          <div className="md:col-span-6 flex items-center justify-center md:justify-start">
+            <h2 className="text-6xl md:text-7xl font-bold tracking-tight text-gray-200">
+              CCA
+            </h2>
           </div>
 
-          {/* Quick Links */}
-          <div className="text-center">
-            <h4 className="text-lg font-semibold mb-4 text-foreground">
-              Quick Links
-            </h4>
-            <div className="flex flex-wrap justify-center gap-4">
-              {quickLinks.map((link) => (
-                <button
-                  key={link.href}
-                  onClick={() => scrollToSection(link.href)}
-                  className="text-muted-foreground hover:text-foreground transition-colors text-sm"
-                >
-                  {link.label}
-                </button>
-              ))}
+          {/* Column 2 — Navigation (1/4) */}
+          <nav className="md:col-span-3 space-y-4 text-sm font-light tracking-widest text-center md:text-left">
+            {navLinks.map((item) => (
+              <a
+                key={item}
+                href="#"
+                className="block text-white/70 hover:text-white transition"
+              >
+                {item}
+              </a>
+            ))}
+          </nav>
+
+          {/* Column 3 — Contact + Socials (1/4) */}
+          <div className="md:col-span-3 space-y-8 text-sm text-white/70 text-center md:text-left">
+            {/* Contact */}
+            <div>
+              <p className="uppercase tracking-widest text-white/40 mb-3">
+                Contact
+              </p>
+              <p>contact@ccanitd.in</p>
+              <p>NIT Durgapur, India</p>
             </div>
-          </div>
 
-          {/* Social Links */}
-          <div className="text-center md:text-right">
-            <h4 className="text-lg font-semibold mb-4 text-foreground">
-              Connect With Us
-            </h4>
-            <div className="flex justify-center md:justify-end gap-4">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full glass flex items-center justify-center text-muted-foreground hover:text-foreground hover:glow-purple transition-all"
-                  aria-label={social.label}
-                >
-                  <social.icon className="w-5 h-5" />
+            {/* Social */}
+            <div>
+              <p className="uppercase tracking-widest text-white/40 mb-3">
+                Our Voice
+              </p>
+              <div className="space-y-2">
+                <a href="#" className="flex items-center gap-2 hover:text-white">
+                  Instagram <span>→</span>
                 </a>
-              ))}
+                <a href="#" className="flex items-center gap-2 hover:text-white">
+                  LinkedIn <span>→</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Copyright */}
-        <div className="mt-12 pt-8 border-t border-border text-center">
-          <p className="text-muted-foreground text-sm">
-            © {new Date().getFullYear()} Centre For Cognitive Activities. All
-            rights reserved.
-          </p>
+      {/* Bottom brand block */}
+      <div className="relative z-10 overflow-hidden">
+        <h1 className="select-none text-[28vw] leading-none font-bold tracking-tight text-gray-300 text-center">
+          CCA
+        </h1>
+
+        <div className="absolute bottom-6 right-6 text-xs text-white/40">
+          © {new Date().getFullYear()} CCA. All rights reserved.
         </div>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

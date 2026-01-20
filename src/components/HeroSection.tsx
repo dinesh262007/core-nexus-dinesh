@@ -1,14 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
-import orb1 from "@/assets/3d-orb-1.jpg";
-import orb2 from "@/assets/3d-orb-2.jpg";
+import orb1 from "@/assets/3d-orb-1.png";
+import orb2 from "@/assets/3d-orb-2.png";
 
 const HeroSection = () => {
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
-    }
+    } 
   };
 
   return (
@@ -27,7 +27,7 @@ const HeroSection = () => {
           <div className="text-center lg:text-left space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm text-muted-foreground">
               <Sparkles className="w-4 h-4 text-primary" />
-              <span>Applications Open for 2024-25</span>
+              <span>CCA Audition 2026</span>
             </div>
 
             <h1 className="text-5xl md:text-7xl font-bold leading-tight">
@@ -89,7 +89,7 @@ const HeroSection = () => {
             </div>
 
             {/* Sketchfab Embed - floating abstract model */}
-            <div className="absolute -top-5 -right-5 w-36 h-36 md:w-48 md:h-48 rounded-xl overflow-hidden glass">
+            {/* <div className="absolute -top-5 -right-5 w-36 h-36 md:w-48 md:h-48 rounded-xl overflow-hidden glass">
               <iframe
                 title="3D Model"
                 className="w-full h-full"
@@ -97,14 +97,14 @@ const HeroSection = () => {
                 allow="autoplay; fullscreen; xr-spatial-tracking"
                 style={{ border: "none" }}
               />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
 
       {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/50 flex items-start justify-center p-2">
+        <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/50 flex flex-col items-start justify-center p-2">
           <div className="w-1 h-2 bg-muted-foreground rounded-full" />
         </div>
       </div>

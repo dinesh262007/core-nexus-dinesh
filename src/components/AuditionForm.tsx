@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Send, CheckCircle } from "lucide-react";
-import orb1 from "@/assets/3d-orb-1.jpg";
+import orb1 from "@/assets/3d-orb-1.png";
 
 const cells = [
   { value: "core", label: "Core Cell" },
