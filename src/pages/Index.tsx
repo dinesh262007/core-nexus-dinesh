@@ -4,6 +4,7 @@ import AboutSection from "@/components/AboutSection";
 import CellsSection from "@/components/CellsSection";
 import AuditionForm from "@/components/AuditionForm";
 import Footer from "@/components/Footer";
+import AarohanSection from "@/components/Aarohansection";
 
 const Index = () => {
   return (
@@ -13,6 +14,7 @@ const Index = () => {
         <HeroSection />
         <AboutSection />
         <CellsSection />
+        <AarohanSection />
         <AuditionForm />
       </main>
       <Footer />

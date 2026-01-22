@@ -25,7 +25,7 @@ const cells: Cell[] = [
     image: orb4,
   },
   {
-    name: "WCDT",
+    name: "WDCT",
     description:
       "Web, Content & Design Team. Crafting stunning websites, compelling content, and beautiful designs that tell our story.",
     tags: ["Web Dev", "UI/UX", "Content"],

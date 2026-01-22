@@ -78,23 +78,23 @@ const AuditionForm = () => {
 
   if (isSubmitted) {
     return (
-      <section id="auditions" className="py-24 relative">
-        <div className="section-divider mb-24" />
-        <div className="container mx-auto px-4">
-          <div className="max-w-xl mx-auto glass rounded-2xl p-8 md:p-12 text-center">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-full gradient-bg flex items-center justify-center glow-purple">
-              <CheckCircle className="w-10 h-10 text-foreground" />
+      <section id="auditions" className="py-16 sm:py-20 md:py-24 relative">
+        <div className="section-divider mb-16 sm:mb-20 md:mb-24" />
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-xl mx-auto glass rounded-2xl p-6 sm:p-8 md:p-12 text-center">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 rounded-full gradient-bg flex items-center justify-center glow-purple">
+              <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-foreground" />
             </div>
-            <h2 className="text-3xl font-bold mb-4 gradient-text">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 gradient-text">
               Application Received!
             </h2>
-            <p className="text-muted-foreground mb-6">
+            <p className="text-sm sm:text-base text-muted-foreground mb-6">
               Thank you for applying to CCA. We'll review your application and
               contact you via email for the next steps.
             </p>
             <Button
               variant="outline"
-              className="gradient-border bg-transparent"
+              className="gradient-border bg-transparent py-3 sm:py-4"
               onClick={() => {
                 setIsSubmitted(false);
                 setFormData({
@@ -115,12 +115,12 @@ const AuditionForm = () => {
   }
 
   return (
-    <section id="auditions" className="py-24 relative">
+    <section id="auditions" className="py-16 sm:py-20 md:py-24 relative">
       {/* Section divider */}
-      <div className="section-divider mb-24" />
+      <div className="section-divider mb-16 sm:mb-20 md:mb-24" />
 
-      {/* Background accent */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] opacity-20">
+      {/* Background accent - hidden on small screens */}
+      <div className="pointer-events-none hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] opacity-20">
         <img
           src={orb1}
           alt=""
@@ -128,13 +128,13 @@ const AuditionForm = () => {
         />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
         {/* Section header */}
-        <div className="text-center mb-12 space-y-4">
-          <h2 className="text-4xl md:text-5xl font-bold">
+        <div className="text-center mb-8 sm:mb-10 md:mb-12 space-y-3 sm:space-y-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold">
             <span className="gradient-text">Audition</span> Application
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+          <p className="text-xs sm:text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto">
             Ready to join CCA? Fill out the form below and take the first step
             towards an amazing journey.
           </p>
@@ -143,13 +143,13 @@ const AuditionForm = () => {
         {/* Form */}
         <form
           onSubmit={handleSubmit}
-          className="max-w-xl mx-auto glass rounded-2xl p-8 md:p-10 space-y-6"
+          className="max-w-full sm:max-w-2xl mx-auto glass rounded-2xl p-4 sm:p-8 md:p-10 space-y-6"
         >
           {/* Google Sign-in placeholder */}
           <Button
             type="button"
             variant="outline"
-            className="w-full gradient-border bg-transparent hover:bg-primary/10 py-6 text-foreground"
+            className="w-full gradient-border bg-transparent hover:bg-primary/10 py-4 sm:py-6 text-foreground flex items-center justify-center"
             onClick={() => {
               toast({
                 title: "Google Sign-in",
@@ -158,7 +158,7 @@ const AuditionForm = () => {
               });
             }}
           >
-            <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2" viewBox="0 0 24 24">
               <path
                 fill="currentColor"
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -190,44 +190,47 @@ const AuditionForm = () => {
             </div>
           </div>
 
-          {/* Name */}
-          <div className="space-y-2">
-            <Label htmlFor="name">Full Name</Label>
-            <Input
-              id="name"
-              name="name"
-              placeholder="Enter your full name"
-              value={formData.name}
-              onChange={handleInputChange}
-              className="bg-muted/50 border-border focus:border-primary"
-            />
-          </div>
+          {/* Responsive grid for inputs */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Name */}
+            <div className="space-y-2">
+              <Label htmlFor="name">Full Name</Label>
+              <Input
+                id="name"
+                name="name"
+                placeholder="Enter your full name"
+                value={formData.name}
+                onChange={handleInputChange}
+                className="bg-muted/50 border-border focus:border-primary w-full"
+              />
+            </div>
 
-          {/* Email */}
-          <div className="space-y-2">
-            <Label htmlFor="email">Email Address</Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="your.email@example.com"
-              value={formData.email}
-              onChange={handleInputChange}
-              className="bg-muted/50 border-border focus:border-primary"
-            />
-          </div>
+            {/* Email */}
+            <div className="space-y-2">
+              <Label htmlFor="email">Email Address</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="your.email@example.com"
+                value={formData.email}
+                onChange={handleInputChange}
+                className="bg-muted/50 border-border focus:border-primary w-full"
+              />
+            </div>
 
-          {/* Roll Number */}
-          <div className="space-y-2">
-            <Label htmlFor="rollNumber">Roll Number / Student ID</Label>
-            <Input
-              id="rollNumber"
-              name="rollNumber"
-              placeholder="e.g., 2024CSE001"
-              value={formData.rollNumber}
-              onChange={handleInputChange}
-              className="bg-muted/50 border-border focus:border-primary"
-            />
+            {/* Roll Number - span both on small screens? keep full width on md */}
+            <div className="space-y-2 md:col-span-2">
+              <Label htmlFor="rollNumber">Roll Number / Student ID</Label>
+              <Input
+                id="rollNumber"
+                name="rollNumber"
+                placeholder="e.g., 2024CSE001"
+                value={formData.rollNumber}
+                onChange={handleInputChange}
+                className="bg-muted/50 border-border focus:border-primary w-full"
+              />
+            </div>
           </div>
 
           {/* Preferred Cell */}
@@ -239,9 +242,7 @@ const AuditionForm = () => {
                 setFormData((prev) => ({ ...prev, preferredCell: value }))
               }
             >
-              <SelectTrigger className="bg-muted/50 border-border">
-                <SelectValue placeholder="Select a cell" />
-              </SelectTrigger>
+              <SelectTrigger className="bg-muted/50 border-border w-full" />
               <SelectContent>
                 {cells.map((cell) => (
                   <SelectItem key={cell.value} value={cell.value}>
@@ -262,14 +263,14 @@ const AuditionForm = () => {
               rows={4}
               value={formData.motivation}
               onChange={handleInputChange}
-              className="bg-muted/50 border-border focus:border-primary resize-none"
+              className="bg-muted/50 border-border focus:border-primary resize-none w-full"
             />
           </div>
 
           {/* Submit Button */}
           <Button
             type="submit"
-            className="w-full gradient-bg text-foreground font-semibold py-6 text-lg glow-purple hover:opacity-90 transition-opacity"
+            className="w-full gradient-bg text-foreground font-semibold py-4 sm:py-6 text-lg glow-purple hover:opacity-90 transition-opacity"
             disabled={isSubmitting}
           >
             {isSubmitting ? (
