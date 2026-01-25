@@ -18,7 +18,7 @@ import orb1 from "@/assets/3d-orb-1.png";
 const cells = [
   { value: "core", label: "Core Cell" },
   { value: "robo", label: "Robo Cell" },
-  { value: "wcdt", label: "WCDT" },
+  { value: "wdct", label: "WDCT" },
   { value: "rnd", label: "R&D Cell" },
   { value: "ecell", label: "E-Cell" },
 ];
@@ -287,7 +287,7 @@ const AuditionForm = () => {
           </div>
 
           {/* Preferred Cell */}
-          <div className="space-y-2">
+            <div className="space-y-2">
             <Label htmlFor="preferredCell">Preferred Cell</Label>
             <Select
               value={formData.preferredCell}
@@ -295,7 +295,9 @@ const AuditionForm = () => {
                 setFormData((prev) => ({ ...prev, preferredCell: value }))
               }
             >
-              <SelectTrigger className="bg-muted/50 border-border w-full" />
+              <SelectTrigger className="bg-muted/50 border-border w-full" id="preferredCell">
+                <SelectValue placeholder="Select a cell" />
+              </SelectTrigger>
               <SelectContent>
                 {cells.map((cell) => (
                   <SelectItem key={cell.value} value={cell.value}>
@@ -304,7 +306,7 @@ const AuditionForm = () => {
                 ))}
               </SelectContent>
             </Select>
-          </div>
+            </div>
 
           {/* Motivation */}
           <div className="space-y-2">
