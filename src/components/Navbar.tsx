@@ -33,7 +33,7 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "glass py-3" : "bg-transparent py-5"
+        isScrolled ? "glass py-3" : "border-b-gray-600 py-5"
       }`}
     >
       <div className="container mx-auto px-4 flex items-center justify-between">
@@ -56,13 +56,13 @@ const Navbar = () => {
             <button
               key={link.href}
               onClick={() => scrollToSection(link.href)}
-              className="text-muted-foreground hover:text-black transition-colors duration-200 text-sm font-medium"
+              className="text-muted-foreground hover:text-[#a7c0d4] transition-colors duration-200 text-sm font-medium text-[#9facac]"
             >
               {link.label}
             </button>
           ))}
           <Button onClick={() => scrollToSection("#auditions")}
-  className="gradient-border bg-transparent text-foreground hover:text-black hover:bg-primary/10 transition-colors duration-200 px-6"
+  className="bg-black text-foreground hover:text-black hover:bg-primary/10 transition-colors duration-200 px-6"
  >
 
             Apply Now

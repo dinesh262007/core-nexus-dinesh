@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
+import HeroBg from "../assets/site-bg.png";
 
 const HeroSection = () => {
   const scrollTo = (id: string) => {
@@ -9,18 +10,21 @@ const HeroSection = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen overflow-visible z-0"
-      style={{ backgroundColor: "#efefef" }}
+      className="relative max-h-[80vh] overflow-visible z-0 flex items-center"
+      style={{
+        backgroundImage: `url(${HeroBg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
     >
       <div className="container mx-auto px-6 pt-28 pb-48">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          
           {/* LEFT */}
           <div className="space-y-6 text-center md:text-left">
-            
             {/* Pill */}
             <div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm mx-auto md:mx-0"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm mx-auto mt-auto md:mx-0"
               style={{
                 backgroundColor: "#161616",
                 color: "#efefef",
@@ -48,7 +52,6 @@ const HeroSection = () => {
 
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-              
               <Button
                 size="lg"
                 className="px-8 py-6 text-lg"
@@ -63,31 +66,29 @@ const HeroSection = () => {
               </Button>
 
               <Button
-  size="lg"
-  variant="outline"
-  className="
-    px-8 py-6 text-lg
-    border
-    hover:bg-[#0F0F0F]
-    hover:text-[#efefef]
-    focus-visible:ring-0
-    focus:ring-0
-    active:ring-0
-    ring-0
-  "
-  style={{
-    borderColor: "#0F0F0F",
-    color: "#efefef",
-  }}
-  onClick={() => scrollTo("#cells")}
->
-  Explore Cells
-</Button>
-
+                size="lg"
+                variant="outline"
+                className="
+                  px-8 py-6 text-lg
+                  border
+                  hover:bg-[#0F0F0F]
+                  hover:text-[#efefef]
+                  focus-visible:ring-0
+                  focus:ring-0
+                  active:ring-0
+                  ring-0
+                "
+                style={{
+                  borderColor: "#0F0F0F",
+                  color: "#efefef",
+                }}
+                onClick={() => scrollTo("#cells")}
+              >
+                Explore Cells
+              </Button>
             </div>
           </div>
 
-          {/* RIGHT (intentionally empty / image later) */}
           <div />
         </div>
       </div>

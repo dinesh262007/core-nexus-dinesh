@@ -1,19 +1,24 @@
-import { Instagram, Linkedin, Mail } from "lucide-react";
-
+import { Instagram, Linkedin, Facebook, Twitter } from "lucide-react";
+import ccalogo from "../assets/cca logo white.png"
 const navLinks = ["Home", "About", "Cells", "Aarohan"];
 
 export default function Footer() {
   return (
-    <footer className="relative bg-[#0F0F0F] text-[#efefef] overflow-hidden">
+    <footer className="relative bg-[#141313] text-[#efefef] overflow-hidden">
       {/* Upper content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-16 md:pt-24 pb-16 md:pb-32">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-start">
 
           {/* Logo */}
-          <div className="md:col-span-6 flex items-center justify-center md:justify-start">
-            <h2 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#efefef]">
-              CCA
-            </h2>
+          <div className="md:col-span-6 flex flex-col items-center justify-center md:justify-start">
+            <img
+            src={ccalogo}
+            alt="CCA Logo"
+            className="h-20 lg:h-40 w-auto object-contain transition-opacity"
+          />
+            <p className="font-mono text-md md:text-lg lg:text-xl font-bold tracking-tight text-[#a9a8a8] mt-2">
+              NITD
+            </p>
           </div>
 
           {/* Navigation */}
@@ -22,7 +27,7 @@ export default function Footer() {
               <a
                 key={item}
                 href="#"
-                className="block text-[#484848] hover:text-[#efefef] transition"
+                className="block text-[#bebcbc] hover:text-[#efefef] transition"
               >
                 {item}
               </a>
@@ -31,26 +36,52 @@ export default function Footer() {
 
           {/* Contact + Socials */}
           <div className="md:col-span-3 space-y-6 md:space-y-8 text-xs sm:text-sm text-center md:text-left">
-            <div className="bg-[#161616] p-4 rounded-lg">
-              <p className="uppercase tracking-widest text-[#484848] mb-2 text-xs">
+            <div className="p-4 rounded-lg">
+              <p className="uppercase tracking-widest text-[#bebcbc] mb-2 text-xs">
                 Contact
               </p>
-              <p className="text-[#484848]">contact@ccanitd.in</p>
-              <p className="text-[#484848]">NIT Durgapur, India</p>
+              <p className="text-[#bebcbc]">contact@ccanitd.in</p>
+              <p className="text-[#bebcbc]">NIT Durgapur, India</p>
             </div>
 
-            <div className="bg-[#161616] p-4 rounded-lg">
-              <p className="uppercase tracking-widest text-[#484848] mb-2 text-xs">
+            <div className="p-4 rounded-lg">
+              <p className="uppercase tracking-widest text-[#bebcbc] mb-2 text-xs">
                 Our Voice
               </p>
-              <div className="space-y-1">
-                <a className="flex items-center gap-2 text-[#484848] hover:text-[#efefef] justify-center md:justify-start transition">
-                  Instagram →
-                </a>
-                <a className="flex items-center gap-2 text-[#484848] hover:text-[#efefef] justify-center md:justify-start transition">
-                  LinkedIn →
-                </a>
-              </div>
+              <div className="flex items-center justify-center md:justify-start gap-4">
+  <a
+    href="#"
+    aria-label="Facebook"
+    className="text-[#bebcbc] hover:text-[#efefef] transition"
+  >
+    <Facebook size={18} />
+  </a>
+
+  <a
+    href="#"
+    aria-label="Instagram"
+    className="text-[#bebcbc] hover:text-[#efefef] transition"
+  >
+    <Instagram size={18} />
+  </a>
+
+  <a
+    href="#"
+    aria-label="X"
+    className="text-[#bebcbc] hover:text-[#efefef] transition"
+  >
+    <Twitter size={18} />
+  </a>
+
+  <a
+    href="#"
+    aria-label="LinkedIn"
+    className="text-[#bebcbc] hover:text-[#efefef] transition"
+  >
+    <Linkedin size={18} />
+  </a>
+</div>
+
             </div>
           </div>
         </div>
@@ -58,12 +89,8 @@ export default function Footer() {
 
       {/* Bottom brand */}
       <div className="relative z-10 overflow-hidden">
-        <h1 className="select-none text-[20vw] sm:text-[24vw] md:text-[28vw] leading-none font-bold tracking-tight text-[#484848] text-center">
-          CCA
-        </h1>
-
-        <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 text-xs text-[#484848]">
-          © {new Date().getFullYear()} CCA. All rights reserved.
+        <div className="text-end text-xs text-[#676666] mb-3 mr-3">
+          © Made with ❤️ WDCT | CCA
         </div>
       </div>
     </footer>

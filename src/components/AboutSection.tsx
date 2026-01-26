@@ -1,5 +1,9 @@
 import { Lightbulb, Cpu, FlaskConical, Users } from "lucide-react";
-
+import Core from "../assets/cells/core.png"
+import Wdct from "../assets/cells/wdct.png"
+import Ecell from "../assets/cells/ecell.png"
+import Rnd from "../assets/cells/rnd.png"
+import Robo from "../assets/cells/robo.png"
 const features = [
   {
     icon: Lightbulb,
@@ -34,7 +38,7 @@ const AboutSection = () => {
       className="
         relative
         z-20
-        -mt-[clamp(6rem,14vw,12rem)]
+        -mt-[clamp(3rem,14vw,6rem)]
         pt-[clamp(6rem,14vw,10rem)]
         pb-24
         overflow-hidden
@@ -45,8 +49,8 @@ const AboutSection = () => {
         className="absolute inset-0 z-[-1]"
         style={{
           backgroundColor: "#0F0F0F",
-          clipPath:
-            "polygon(0 0, 35% 0, 50% 12%, 100% 12%, 100% 100%, 0 100%)",
+          clipPath: "polygon(30% 0, 70% 0, 100% 100%, 0 100%)",
+          height: "150px"
         }}
       />
 

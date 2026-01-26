@@ -114,7 +114,7 @@ const AarohanSection = () => {
           preload="auto"
           style={{ opacity: 0.55, transform: "scale(1.12)" }}
         />
-        <div className="absolute inset-0 bg-[#0F0F0F]/40" />
+        <div className="absolute inset-0 bg-[#0F0F0F]/10" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0F0F0F]/80 via-[#0F0F0F]/40 to-[#0F0F0F]/90" />
       </div>
 
@@ -176,7 +176,7 @@ const AarohanSection = () => {
                     className="w-full h-full object-cover"
                   />
 
-                  {isActive && (
+                  {/* {isActive && (
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0F0F0F]/90 via-transparent to-transparent p-8 flex flex-col justify-end">
                       <h3
                         className="text-3xl font-bold mb-2"
@@ -206,7 +206,7 @@ const AarohanSection = () => {
                         ))}
                       </div>
                     </div>
-                  )}
+                  )} */}
                 </div>
               );
             })}
