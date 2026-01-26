@@ -29,47 +29,72 @@ const features = [
 
 const AboutSection = () => {
   return (
-    <section id="about" className="py-12 md:py-24 relative">
-      {/* Section divider */}
-      <div className="section-divider mb-12 md:mb-24" />
+    <section
+      id="about"
+      className="
+        relative
+        z-20
+        -mt-[clamp(6rem,14vw,12rem)]
+        pt-[clamp(6rem,14vw,10rem)]
+        pb-24
+        overflow-hidden
+      "
+    >
+      {/* ANGLED DARK BRIDGE */}
+      <div
+        className="absolute inset-0 z-[-1]"
+        style={{
+          backgroundColor: "#0F0F0F",
+          clipPath:
+            "polygon(0 0, 35% 0, 50% 12%, 100% 12%, 100% 100%, 0 100%)",
+        }}
+      />
 
-      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
-        <div className="text-center mb-8 sm:mb-16 space-y-3 sm:space-y-4">
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold">
-            What We <span className="gradient-text">Do</span>
+      <div className="container mx-auto px-6 max-w-7xl">
+        {/* Heading */}
+        <div className="text-center mb-16 space-y-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#efefef]">
+            What We Do
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base">
+
+          <p className="max-w-2xl mx-auto text-[#484848]">
             Centre For Cognitive Activities is a student-driven technical club
             that empowers innovation through collaboration, learning, and
             hands-on projects.
           </p>
         </div>
 
-        {/* Feature cards */}
-        <div
-          role="list"
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
-        >
-          {features.map((feature, index) => {
+        {/* Feature Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {features.map((feature) => {
             const Icon = feature.icon;
+
             return (
-              <article
-                role="listitem"
+              <div
                 key={feature.title}
-                className="glass rounded-xl p-4 sm:p-6 hover-lift group transition-transform transform hover:-translate-y-1"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className="
+                  rounded-2xl
+                  p-6
+                  transition-all
+                  duration-300
+                  hover:-translate-y-2
+                "
+                style={{
+                  backgroundColor: "#161616",
+                }}
               >
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg gradient-bg flex items-center justify-center mb-3 sm:mb-4 group-hover:glow-purple transition-all">
-                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-foreground" />
+                <div className="w-12 h-12 flex items-center justify-center rounded-xl mb-4">
+                  <Icon className="w-6 h-6 text-[#efefef]" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2 text-foreground">
+
+                <h3 className="text-xl font-semibold text-[#efefef] mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-muted-foreground text-sm sm:text-sm">
+
+                <p className="text-sm leading-relaxed text-[#484848]">
                   {feature.description}
                 </p>
-              </article>
+              </div>
             );
           })}
         </div>

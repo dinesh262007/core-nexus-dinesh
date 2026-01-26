@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import ccalogo from "@/assets/ccalogo.png"; // adjust path if needed
 
 const navLinks = [
   { href: "#home", label: "Home" },
@@ -36,12 +37,17 @@ const Navbar = () => {
       }`}
     >
       <div className="container mx-auto px-4 flex items-center justify-between">
+        
         {/* Logo */}
         <button
           onClick={() => scrollToSection("#home")}
-          className="text-2xl font-bold gradient-text hover:opacity-80 transition-opacity"
+          className="flex items-center"
         >
-          CCA
+          <img
+            src={ccalogo}
+            alt="CCA Logo"
+            className="h-10 w-auto object-contain hover:opacity-80 transition-opacity"
+          />
         </button>
 
         {/* Desktop Navigation */}
@@ -50,15 +56,15 @@ const Navbar = () => {
             <button
               key={link.href}
               onClick={() => scrollToSection(link.href)}
-              className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium"
+              className="text-muted-foreground hover:text-black transition-colors duration-200 text-sm font-medium"
             >
               {link.label}
             </button>
           ))}
-          <Button
-            onClick={() => scrollToSection("#auditions")}
-            className="gradient-border bg-transparent hover:bg-primary/10 text-foreground px-6"
-          >
+          <Button onClick={() => scrollToSection("#auditions")}
+  className="gradient-border bg-transparent text-foreground hover:text-black hover:bg-primary/10 transition-colors duration-200 px-6"
+ >
+
             Apply Now
           </Button>
         </div>

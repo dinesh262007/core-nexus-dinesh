@@ -49,17 +49,14 @@ const cells: Cell[] = [
 
 const CellsSection = () => {
   return (
-    <section id="cells" className="py-24 relative">
-      {/* Section divider */}
-      <div className="section-divider mb-24" />
-
+    <section id="cells" className="py-24 bg-[#0f0f0f]">
       <div className="container mx-auto px-4">
         {/* Section header */}
         <div className="text-center mb-16 space-y-4">
-          <h2 className="text-4xl md:text-5xl font-bold">
-            Our <span className="gradient-text">Cells</span>
+          <h2 className="text-4xl md:text-5xl font-bold text-[#efefef]">
+            Our Cells
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+          <p className="max-w-2xl mx-auto text-lg text-[#484848]">
             Five specialized cells, each with a unique focus. Find your passion
             and join the team that resonates with you.
           </p>
@@ -70,9 +67,8 @@ const CellsSection = () => {
           {cells.map((cell, index) => (
             <div
               key={cell.name}
-              className={`group glass rounded-2xl p-6 md:p-8 hover-lift transition-all ${
-                index % 2 === 0 ? "" : "md:flex-row-reverse"
-              }`}
+              className="rounded-2xl p-6 md:p-8 transition-transform hover:-translate-y-1"
+              style={{ backgroundColor: "#161616" }}
             >
               <div
                 className={`flex flex-col md:flex-row items-center gap-6 md:gap-10 ${
@@ -86,7 +82,6 @@ const CellsSection = () => {
                     alt={cell.name}
                     className="w-full h-full object-cover rounded-xl"
                   />
-                  <div className="absolute inset-0 rounded-xl bg-gradient-iridescent opacity-20 group-hover:opacity-40 transition-opacity" />
                 </div>
 
                 {/* Cell Content */}
@@ -95,12 +90,13 @@ const CellsSection = () => {
                     index % 2 === 1 ? "md:text-right" : ""
                   }`}
                 >
-                  <h3 className="text-2xl md:text-3xl font-bold mb-3 gradient-text">
+                  <h3 className="text-2xl md:text-3xl font-bold mb-3 text-[#efefef]">
                     {cell.name}
                   </h3>
-                  <p className="text-muted-foreground mb-4 max-w-xl">
+                  <p className="mb-4 max-w-xl text-[#484848]">
                     {cell.description}
                   </p>
+
                   <div
                     className={`flex flex-wrap gap-2 justify-center ${
                       index % 2 === 1 ? "md:justify-end" : "md:justify-start"
@@ -109,7 +105,7 @@ const CellsSection = () => {
                     {cell.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-3 py-1 rounded-full text-sm gradient-border bg-muted/50 text-muted-foreground"
+                        className="px-3 py-1 rounded-full text-sm text-[#484848] border border-[#484848]/40"
                       >
                         {tag}
                       </span>
