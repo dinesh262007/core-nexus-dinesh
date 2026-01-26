@@ -48,7 +48,7 @@ const AarohanSection = () => {
         theme: "purple",
       },
     ],
-    []
+    [],
   );
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -94,6 +94,7 @@ const AarohanSection = () => {
   const isSmallMobile = windowWidth <= 400;
   const isMobile = windowWidth <= 768;
   const isTablet = windowWidth > 768 && windowWidth <= 1024;
+  const touchStartX = useRef(0);
 
   return (
     <section
@@ -129,21 +130,23 @@ const AarohanSection = () => {
           </h2>
 
           {!isMobile && (
-            <p
-              className="max-w-2xl mx-auto mt-2"
-              style={{ color: "#484848" }}
-            >
+            <p className="max-w-2xl mx-auto mt-2" style={{ color: "#484848" }}>
               Scroll through and feel the energy of our flagship technical fest.
             </p>
           )}
         </div>
 
         {/* Cards */}
-        <div className="relative flex items-center justify-center">
+        <div className="relative flex flex-col items-center">
           <div
-            className={`relative w-full ${
+            className={`relative w-full touch-pan-x ${
               isMobile ? "max-w-sm h-[280px]" : "max-w-4xl h-[480px]"
             }`}
+            onTouchStart={(e) => (touchStartX.current = e.touches[0].clientX)}
+            onTouchEnd={(e) => {
+              const delta = e.changedTouches[0].clientX - touchStartX.current;
+              if (Math.abs(delta) > 50) delta > 0 ? prev() : next();
+            }}
           >
             {cards.map((card, idx) => {
               const total = cards.length;
@@ -213,26 +216,38 @@ const AarohanSection = () => {
           </div>
 
           {/* Navigation */}
-          <div className="absolute -bottom-14 flex gap-4">
-            <button
-              onClick={prev}
-              className="w-11 h-11 rounded-full flex items-center justify-center transition"
-              style={{
-                backgroundColor: "#161616",
-                border: "1px solid #efefef22",
-              }}
-            >
-              <ChevronLeft style={{ color: "#efefef" }} />
-            </button>
+          {/* Mobile pagination */}
+          {isMobile && (
+            <div className="flex justify-center gap-2 mt-6">
+              {cards.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setActiveIndex(i)}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    i === activeIndex ? "w-6 bg-[#efefef]" : "w-2 bg-[#484848]"
+                  }`}
+                />
+              ))}
+            </div>
+          )}
+          {/* Desktop navigation */}
+          {!isMobile && (
+            <>
+              <button
+                onClick={prev}
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full flex items-center justify-center backdrop-blur bg-[#161616]/80 border border-[#efefef22] hover:scale-105 transition"
+              >
+                <ChevronLeft className="text-[#efefef]" />
+              </button>
 
-            <button
-              onClick={next}
-              className="w-11 h-11 rounded-full flex items-center justify-center transition"
-              style={{ backgroundColor: "#efefef" }}
-            >
-              <ChevronRight style={{ color: "#0F0F0F" }} />
-            </button>
-          </div>
+              <button
+                onClick={next}
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full flex items-center justify-center bg-[#efefef] hover:scale-105 transition"
+              >
+                <ChevronRight className="text-[#0F0F0F]" />
+              </button>
+            </>
+          )}
         </div>
       </div>
     </section>
