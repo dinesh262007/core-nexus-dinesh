@@ -130,7 +130,7 @@ const AarohanSection = () => {
           </h2>
 
           {!isMobile && (
-            <p className="max-w-2xl mx-auto mt-2" style={{ color: "#484848" }}>
+            <p className="max-w-2xl mx-auto mt-2 text-lg text-gray-400">
               Scroll through and feel the energy of our flagship technical fest.
             </p>
           )}

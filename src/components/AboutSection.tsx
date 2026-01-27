@@ -61,7 +61,7 @@ const AboutSection = () => {
             What We Do
           </h2>
 
-          <p className="max-w-2xl mx-auto text-[#484848]">
+          <p className="max-w-2xl mx-auto text-gray-400 text-lg">
             Centre For Cognitive Activities is a student-driven technical club
             that empowers innovation through collaboration, learning, and
             hands-on projects.
@@ -95,7 +95,7 @@ const AboutSection = () => {
                   {feature.title}
                 </h3>
 
-                <p className="text-sm leading-relaxed text-[#484848]">
+                <p className="text-sm leading-relaxed text-gray-400">
                   {feature.description}
                 </p>
               </div>

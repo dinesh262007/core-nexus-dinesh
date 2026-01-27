@@ -18,39 +18,40 @@ const cells: Cell[] = [
   {
     name: "Core Cell",
     description:
-      "The backbone of CCA operations. Core Cell handles event management, coordination, and ensures smooth functioning of all club activities.",
+      "The driving force of CCA — disciplined, collaborative, and focused on smooth club operations. We lead workshops, events, and secure sponsorships for Aarohan.",
     tags: ["Management", "Leadership", "Events"],
     image: core,
   },
   {
     name: "Robo Cell",
     description:
-      "Where machines come to life. Build robots, explore automation, and compete in national-level robotics competitions.",
+      "Where innovation meets robotics. From Arduino to automation, we host workshops and competitions to spread awareness and creativity in robotics.",
     tags: ["Robotics", "Arduino", "Automation"],
     image: robo,
   },
   {
     name: "WDCT",
     description:
-      "Web, Content & Design Team. Crafting stunning websites, compelling content, and beautiful designs that tell our story.",
+      "The digital architects of CCA. We design websites, run web dev workshops, and manage online content for Aarohan and beyond.",
     tags: ["Web Dev", "UI/UX", "Content"],
     image: wdct,
   },
   {
     name: "R&D Cell",
     description:
-      "Research and Development hub. Explore emerging technologies, conduct experiments, and publish groundbreaking work.",
+      "Fueling innovation through research. We nurture curiosity and exploration in engineering, science, and humanities with cutting-edge projects.",
     tags: ["Research", "AI/ML", "Innovation"],
     image: rnd,
   },
   {
     name: "E-Cell",
     description:
-      "Entrepreneurship Cell. Transform ideas into startups. Learn business skills, pitch to investors, and build the next big thing.",
+      "Igniting entrepreneurial spirit. We inspire startups, foster innovation, and support incubation for bold ideas within the campus.",
     tags: ["Startups", "Business", "Pitching"],
     image: ecell,
   },
 ];
+
 
 const CellsSection = () => {
   return (
@@ -61,7 +62,7 @@ const CellsSection = () => {
           <h2 className="text-4xl md:text-5xl font-bold text-[#efefef]">
             Our Cells
           </h2>
-          <p className="max-w-2xl mx-auto text-lg text-[#484848]">
+          <p className="max-w-2xl mx-auto text-lg text-gray-400">
             Five specialized cells, each with a unique focus. Find your passion
             and join the team that resonates with you.
           </p>
@@ -98,7 +99,7 @@ const CellsSection = () => {
                   <h3 className="text-2xl md:text-3xl font-bold mb-3 text-[#efefef]">
                     {cell.name}
                   </h3>
-                  <p className="mb-4 max-w-xl text-[#484848]">
+                  <p className="mb-4 max-w-xl text-gray-400 mx-auto md:mx-0">
                     {cell.description}
                   </p>
 
@@ -110,7 +111,7 @@ const CellsSection = () => {
                     {cell.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-3 py-1 rounded-full text-sm text-[#484848] border border-[#484848]/40"
+                        className="px-3 py-1 rounded-full text-sm text-gray-250 border border-[#484848]/40"
                       >
                         {tag}
                       </span>

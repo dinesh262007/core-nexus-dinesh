@@ -97,7 +97,7 @@ const AuditionForm = () => {
               Application Received!
             </h2>
 
-            <p className="text-[#484848] mb-6">
+            <p className="text-gray-400 mb-6">
               Thank you for applying to CCA. We'll contact you via email soon.
             </p>
 
@@ -138,7 +138,7 @@ const AuditionForm = () => {
           <h2 className="text-4xl font-bold text-[#efefef] mb-4">
             Audition Application
           </h2>
-          <p className="text-[#484848] max-w-xl mx-auto">
+          <p className="text-gray-400 max-w-xl mx-auto">
             Fill out the form below and take the first step towards joining CCA.
           </p>
         </div>
