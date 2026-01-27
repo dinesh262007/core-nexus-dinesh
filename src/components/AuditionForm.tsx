@@ -16,7 +16,7 @@ import orb1 from "@/assets/3d-orb-1.png";
 const cells = [
   { value: "core", label: "Core Cell" },
   { value: "robo", label: "Robo Cell" },
-  { value: "wcdt", label: "WCDT" },
+  { value: "wdct", label: "WDCT" },
   { value: "rnd", label: "R&D Cell" },
   { value: "ecell", label: "E-Cell" },
 ];
