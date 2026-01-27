@@ -1,6 +1,11 @@
 import orb3 from "@/assets/3d-orb-3.jpg";
 import orb4 from "@/assets/3d-orb-4.jpg";
 import orb5 from "@/assets/3d-orb-5.jpg";
+import core from "@/assets/cells/core.png";
+import robo from "@/assets/cells/robo.png";
+import wdct from "@/assets/cells/wdct.png"; 
+import rnd from "@/assets/cells/rnd.png";
+import ecell from "@/assets/cells/ecell.png";
 
 interface Cell {
   name: string;
@@ -15,35 +20,35 @@ const cells: Cell[] = [
     description:
       "The backbone of CCA operations. Core Cell handles event management, coordination, and ensures smooth functioning of all club activities.",
     tags: ["Management", "Leadership", "Events"],
-    image: orb3,
+    image: core,
   },
   {
     name: "Robo Cell",
     description:
       "Where machines come to life. Build robots, explore automation, and compete in national-level robotics competitions.",
     tags: ["Robotics", "Arduino", "Automation"],
-    image: orb4,
+    image: robo,
   },
   {
     name: "WDCT",
     description:
       "Web, Content & Design Team. Crafting stunning websites, compelling content, and beautiful designs that tell our story.",
     tags: ["Web Dev", "UI/UX", "Content"],
-    image: orb5,
+    image: wdct,
   },
   {
     name: "R&D Cell",
     description:
       "Research and Development hub. Explore emerging technologies, conduct experiments, and publish groundbreaking work.",
     tags: ["Research", "AI/ML", "Innovation"],
-    image: orb3,
+    image: rnd,
   },
   {
     name: "E-Cell",
     description:
       "Entrepreneurship Cell. Transform ideas into startups. Learn business skills, pitch to investors, and build the next big thing.",
     tags: ["Startups", "Business", "Pitching"],
-    image: orb4,
+    image: ecell,
   },
 ];
 
