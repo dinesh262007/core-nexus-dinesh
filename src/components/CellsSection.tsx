@@ -3,7 +3,7 @@ import orb4 from "@/assets/3d-orb-4.jpg";
 import orb5 from "@/assets/3d-orb-5.jpg";
 import core from "@/assets/cells/core.png";
 import robo from "@/assets/cells/robo.png";
-import wdct from "@/assets/cells/wdct.png"; 
+import wdct from "@/assets/cells/wdct.png";
 import rnd from "@/assets/cells/rnd.png";
 import ecell from "@/assets/cells/ecell.png";
 
@@ -52,7 +52,6 @@ const cells: Cell[] = [
   },
 ];
 
-
 const CellsSection = () => {
   return (
     <section id="cells" className="py-24 bg-[#0f0f0f]">
@@ -73,20 +72,53 @@ const CellsSection = () => {
           {cells.map((cell, index) => (
             <div
               key={cell.name}
-              className="rounded-2xl p-6 md:p-8 transition-transform hover:-translate-y-1"
+              className="
+                relative
+                group
+                rounded-2xl
+                p-6 md:p-8
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                border border-white/10
+                hover:border-purple-400/40
+              "
               style={{ backgroundColor: "#161616" }}
             >
+              {/* Hover glow + elevation */}
               <div
-                className={`flex flex-col md:flex-row items-center gap-6 md:gap-10 ${
+                className="
+                  absolute inset-0 rounded-2xl
+                  opacity-0 group-hover:opacity-100
+                  transition-opacity duration-300
+                  pointer-events-none
+                "
+                style={{
+                  boxShadow:
+                    "0 18px 40px rgba(0,0,0,0.65), 0 0 40px rgba(168,85,247,0.25)",
+                }}
+              />
+
+              <div
+                className={`relative flex flex-col md:flex-row items-center gap-6 md:gap-10 ${
                   index % 2 === 1 ? "md:flex-row-reverse" : ""
                 }`}
               >
                 {/* Cell Image */}
                 <div className="relative w-24 h-24 md:w-32 md:h-32 flex-shrink-0">
+                  {/* image glow */}
+                  <div className="absolute inset-0 rounded-xl bg-purple-500/25 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
                   <img
                     src={cell.image}
                     alt={cell.name}
-                    className="w-full h-full object-cover rounded-xl"
+                    className="
+                      relative
+                      w-full h-full
+                      object-contain
+                      mix-blend-lighten
+                      drop-shadow-[0_0_10px_rgba(0,0,0,0.6)]
+                    "
                   />
                 </div>
 
@@ -99,6 +131,7 @@ const CellsSection = () => {
                   <h3 className="text-2xl md:text-3xl font-bold mb-3 text-[#efefef]">
                     {cell.name}
                   </h3>
+
                   <p className="mb-4 max-w-xl text-gray-400 mx-auto md:mx-0">
                     {cell.description}
                   </p>
@@ -111,7 +144,12 @@ const CellsSection = () => {
                     {cell.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-3 py-1 rounded-full text-sm text-gray-250 border border-[#484848]/40"
+                        className="
+                          px-3 py-1 rounded-full
+                          text-sm text-gray-300
+                          border border-[#484848]/40
+                          bg-black/20
+                        "
                       >
                         {tag}
                       </span>

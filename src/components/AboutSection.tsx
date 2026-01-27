@@ -4,6 +4,7 @@ import Wdct from "../assets/cells/wdct.png"
 import Ecell from "../assets/cells/ecell.png"
 import Rnd from "../assets/cells/rnd.png"
 import Robo from "../assets/cells/robo.png"
+
 const features = [
   {
     icon: Lightbulb,
@@ -50,7 +51,7 @@ const AboutSection = () => {
         style={{
           backgroundColor: "#0F0F0F",
           clipPath: "polygon(30% 0, 70% 0, 100% 100%, 0 100%)",
-          height: "150px"
+          height: "150px",
         }}
       />
 
@@ -77,18 +78,44 @@ const AboutSection = () => {
               <div
                 key={feature.title}
                 className="
+                  relative
+                  group
                   rounded-2xl
                   p-6
                   transition-all
                   duration-300
-                  hover:-translate-y-2
+                  hover:-translate-y-3
+                  border border-white/10
+                  hover:border-purple-400/40
                 "
                 style={{
                   backgroundColor: "#161616",
+                  boxShadow: "0 0 0 rgba(0,0,0,0)",
                 }}
               >
-                <div className="w-12 h-12 flex items-center justify-center rounded-xl mb-4">
-                  <Icon className="w-6 h-6 text-[#efefef]" />
+                {/* STRONG + CLEAN hover shadow */}
+                <div
+                  className="
+                    absolute
+                    inset-0
+                    rounded-2xl
+                    opacity-0
+                    group-hover:opacity-100
+                    transition-opacity
+                    duration-300
+                    pointer-events-none
+                  "
+                  style={{
+                    boxShadow:
+                      "0 18px 40px rgba(0,0,0,0.65), 0 0 45px rgba(168,85,247,0.35)",
+                  }}
+                />
+
+                {/* Icon container */}
+                <div className="relative w-12 h-12 flex items-center justify-center rounded-xl mb-4">
+                  {/* Icon glow */}
+                  <div className="absolute inset-0 rounded-xl bg-purple-500/40 blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <Icon className="relative w-6 h-6 text-[#efefef]" />
                 </div>
 
                 <h3 className="text-xl font-semibold text-[#efefef] mb-2">
