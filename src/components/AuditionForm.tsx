@@ -122,7 +122,8 @@ const AuditionForm = () => {
             </h2>
 
             <p className="text-gray-400 mb-6">
-              Thank you for applying to CCA. We'll contact you via email soon.
+              Thank you for applying to CCA. We'll contact you via email soon.Join us on our whatsapp group for further updates.
+              https://chat.whatsapp.com/K6u1mYk1v3pQn
             </p>
 
             <Button
