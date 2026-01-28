@@ -8,6 +8,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Send, CheckCircle } from "lucide-react";
@@ -19,6 +20,25 @@ const cells = [
   { value: "wdct", label: "WDCT" },
   { value: "rnd", label: "R&D Cell" },
   { value: "ecell", label: "E-Cell" },
+];
+
+const genders = [
+  { value: "male", label: "Male" },
+  { value: "female", label: "Female" },
+  { value: "other", label: "Other" },
+];
+
+const departments = [
+  { value: "bt", label: "Biotechnology" },
+  { value: "che", label: "Chemical Engineering" },
+  { value: "ce", label: "Civil Engineering" },
+  { value: "cse", label: "Computer Science and Engineering" },
+  { value: "ee", label: "Electrical Engineering" },
+  { value: "ece", label: "Electronics and Communication Engineering" },
+  { value: "ic", label: "Integrated Chemistry" },
+  { value: "mnc", label: "Mathematics and Computing" },
+  { value: "me", label: "Mechanical Engineering" },
+  { value: "mme", label: "Metallurgical and Materials Engineering" },
 ];
 
 const inputStyle = `
@@ -42,7 +62,9 @@ const AuditionForm = () => {
     name: "",
     email: "",
     rollNumber: "",
+    gender: "", // Added gender field
     preferredCell: "",
+    department: "",
     motivation: "",
   });
 
@@ -53,7 +75,9 @@ const AuditionForm = () => {
       !formData.name ||
       !formData.email ||
       !formData.rollNumber ||
+      !formData.gender || // Added gender validation
       !formData.preferredCell ||
+      !formData.department ||
       !formData.motivation
     ) {
       toast({
@@ -110,7 +134,9 @@ const AuditionForm = () => {
                   name: "",
                   email: "",
                   rollNumber: "",
+                  gender: "", // Reset gender
                   preferredCell: "",
+                  department: "",
                   motivation: "",
                 });
               }}
@@ -173,73 +199,174 @@ const AuditionForm = () => {
             </div>
           </div>
 
-          {/* Roll */}
-          <div className="space-y-2">
-            <Label>Roll Number</Label>
-            <Input
-              name="rollNumber"
-              value={formData.rollNumber}
-              onChange={handleInputChange}
-              placeholder="2024CSE001"
-              className={inputStyle}
-            />
+          {/* Roll Number & Gender */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Roll Number</Label>
+              <Input
+                name="rollNumber"
+                value={formData.rollNumber}
+                onChange={handleInputChange}
+                placeholder="25A80043"
+                className={inputStyle}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Gender</Label>
+              <Select
+                value={formData.gender}
+                onValueChange={(value) =>
+                  setFormData((prev) => ({ ...prev, gender: value }))
+                }
+              >
+                <SelectTrigger
+                  className="
+                    bg-[#161616]
+                    border-[#0F0F0F]
+                    text-[#efefef]
+                    w-full
+                    focus:outline-none
+                    focus:ring-0
+                    focus-visible:outline-none
+                    focus-visible:ring-0
+                  "
+                >
+                  <SelectValue placeholder="Select gender" />
+                </SelectTrigger>
+                <SelectContent
+                  className="
+                    bg-[#161616]
+                    border-[#0F0F0F]
+                    text-[#efefef]
+                  "
+                >
+                  {genders.map((gender) => (
+                    <SelectItem
+                      key={gender.value}
+                      value={gender.value}
+                      className="
+                        text-[#efefef]
+                        focus:bg-[#2a2a2a]
+                        focus:text-[#efefef]
+                        hover:bg-[#2a2a2a]
+                        data-[highlighted]:bg-[#2a2a2a]
+                        data-[highlighted]:text-[#efefef]
+                        focus:outline-none
+                        focus:ring-0
+                      "
+                    >
+                      {gender.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
-                    {/* Select */}
-          <div className="space-y-2">
-            <Label>Preferred Cell</Label>
-            <Select
-              value={formData.preferredCell}
-              onValueChange={(value) =>
-                setFormData((prev) => ({ ...prev, preferredCell: value }))
-              }
-            >
-              <SelectTrigger
-                className="
-                  bg-[#161616]
-                  border-[#0F0F0F]
-                  text-[#efefef]
-                  w-full
-                  focus:outline-none
-                  focus:ring-0
-                  focus-visible:outline-none
-                  focus-visible:ring-0
-                "
+          {/* Preferred Cell & Department */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Preferred Cell</Label>
+              <Select
+                value={formData.preferredCell}
+                onValueChange={(value) =>
+                  setFormData((prev) => ({ ...prev, preferredCell: value }))
+                }
               >
-                <span className="text-[#efefef]">
-                  {formData.preferredCell
-                    ? cells.find((cell) => cell.value === formData.preferredCell)?.label
-                    : "Select a cell"}
-                </span>
-              </SelectTrigger>
+                <SelectTrigger
+                  className="
+                    bg-[#161616]
+                    border-[#0F0F0F]
+                    text-[#efefef]
+                    w-full
+                    focus:outline-none
+                    focus:ring-0
+                    focus-visible:outline-none
+                    focus-visible:ring-0
+                  "
+                >
+                  <SelectValue placeholder="Select a cell" />
+                </SelectTrigger>
+                <SelectContent
+                  className="
+                    bg-[#161616]
+                    border-[#0F0F0F]
+                    text-[#efefef]
+                  "
+                >
+                  {cells.map((cell) => (
+                    <SelectItem
+                      key={cell.value}
+                      value={cell.value}
+                      className="
+                        text-[#efefef]
+                        focus:bg-[#2a2a2a]
+                        focus:text-[#efefef]
+                        hover:bg-[#2a2a2a]
+                        data-[highlighted]:bg-[#2a2a2a]
+                        data-[highlighted]:text-[#efefef]
+                        focus:outline-none
+                        focus:ring-0
+                      "
+                    >
+                      {cell.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-              <SelectContent
-                className="
-                  bg-[#161616]
-                  border-[#0F0F0F]
-                  text-[#efefef]
-                "
+            <div className="space-y-2">
+              <Label>Department</Label>
+              <Select
+                value={formData.department}
+                onValueChange={(value) =>
+                  setFormData((prev) => ({ ...prev, department: value }))
+                }
               >
-                {cells.map((cell) => (
-                  <SelectItem
-                    key={cell.value}
-                    value={cell.value}
-                    className="
-                      text-[#efefef]
-                      focus:bg-[#2a2a2a]
-                      focus:text-[#efefef]
-                      hover:bg-[#2a2a2a]
-                      data-[highlighted]:bg-[#2a2a2a]
-                      data-[highlighted]:text-[#efefef]
-                      focus:outline-none
-                      focus:ring-0
-                    "
-                  >
-                    {cell.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                <SelectTrigger
+                  className="
+                    bg-[#161616]
+                    border-[#0F0F0F]
+                    text-[#efefef]
+                    w-full
+                    focus:outline-none
+                    focus:ring-0
+                    focus-visible:outline-none
+                    focus-visible:ring-0
+                  "
+                >
+                  <SelectValue placeholder="Select department" />
+                </SelectTrigger>
+                <SelectContent
+                  className="
+                    bg-[#161616]
+                    border-[#0F0F0F]
+                    text-[#efefef]
+                  "
+                >
+                  {departments.map((dept) => (
+                    <SelectItem
+                      key={dept.value}
+                      value={dept.value}
+                      className="
+                        text-[#efefef]
+                        focus:bg-[#2a2a2a]
+                        focus:text-[#efefef]
+                        hover:bg-[#2a2a2a]
+                        data-[highlighted]:bg-[#2a2a2a]
+                        data-[highlighted]:text-[#efefef]
+                        focus:outline-none
+                        focus:ring-0
+                      "
+                    >
+                      {dept.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           {/* Motivation */}
