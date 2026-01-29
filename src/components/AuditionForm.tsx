@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { db } from "../firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import {
   Select,
   SelectContent,
@@ -13,6 +15,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Send, CheckCircle } from "lucide-react";
 import orb1 from "@/assets/3d-orb-1.png";
+
 
 const cells = [
   { value: "core", label: "Core Cell" },
@@ -69,35 +72,50 @@ const AuditionForm = () => {
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (
-      !formData.name ||
-      !formData.email ||
-      !formData.rollNumber ||
-      !formData.gender || // Added gender validation
-      !formData.preferredCell ||
-      !formData.department ||
-      !formData.motivation
-    ) {
-      toast({
-        title: "Missing fields",
-        description: "Please fill in all required fields.",
-        variant: "destructive",
-      });
-      return;
-    }
+  if (
+    !formData.name ||
+    !formData.email ||
+    !formData.rollNumber ||
+    !formData.gender ||
+    !formData.preferredCell ||
+    !formData.department ||
+    !formData.motivation
+  ) {
+    toast({
+      title: "Missing fields",
+      description: "Please fill in all required fields.",
+      variant: "destructive",
+    });
+    return;
+  }
 
-    setIsSubmitting(true);
-    await new Promise((r) => setTimeout(r, 2000));
-    setIsSubmitting(false);
+  setIsSubmitting(true);
+
+  try {
+    await addDoc(collection(db, "audition_applications"), {
+      ...formData,
+      createdAt: serverTimestamp(),
+    });
+
     setIsSubmitted(true);
 
     toast({
       title: "Application Submitted!",
       description: "We'll review your application and get back to you soon.",
     });
-  };
+  } catch (error) {
+    console.error(error);
+    toast({
+      title: "Submission failed",
+      description: "Something went wrong. Please try again.",
+      variant: "destructive",
+    });
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
