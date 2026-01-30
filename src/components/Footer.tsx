@@ -1,6 +1,7 @@
-import { Instagram, Linkedin, Facebook, Twitter } from "lucide-react";
+import { Instagram, Linkedin, Facebook, Twitter, Phone } from "lucide-react";
 import ccalogo from "../assets/cca logo white.png";
 const navLinks = ["Home", "About", "Cells", "Aarohan"];
+
 
 export default function Footer() {
   return (
@@ -21,7 +22,6 @@ export default function Footer() {
           </div>
           {/* Navigation */}
           <nav className="col-span-1 row-span-1 md:col-span-3 space-y-3 md:space-y-4 text-xs sm:text-sm font-light tracking-widest text-center md:text-left self-center">
-
             {navLinks.map((item) => (
               <a
                 key={item}
@@ -39,8 +39,22 @@ export default function Footer() {
               <p className="uppercase tracking-widest text-[#bebcbc] mb-2 text-xs">
                 Contact
               </p>
-              <p className="text-[#bebcbc]">contact@ccanitd.in</p>
-              <p className="text-[#bebcbc]">NIT Durgapur, India</p>
+
+              {/* Phone numbers */}
+              <div className="flex flex-col gap-1 mb-2">
+                <div className="flex items-center justify-center md:self-start gap-2 text-[#bebcbc]">
+                  <Phone size={14} />
+                  <span className="text-sm">9811608307</span>
+                </div>
+
+                <div className="flex items-center justify-center md:self-start gap-2 text-[#bebcbc]">
+                  <Phone size={14} />
+                  <span className="text-sm">7001392178</span>
+                </div>
+              </div>
+
+              {/* Location */}
+              <p className="text-[#bebcbc] text-sm">NIT Durgapur, India</p>
             </div>
 
             <div className="p-4 rounded-lg">
@@ -49,7 +63,7 @@ export default function Footer() {
               </p>
               <div className="flex items-center justify-center md:justify-start gap-4">
                 <a
-                  href="#"
+                  href="https://www.facebook.com/ccanitd.in"
                   aria-label="Facebook"
                   className="text-[#bebcbc] hover:text-[#efefef] transition"
                 >
@@ -57,7 +71,7 @@ export default function Footer() {
                 </a>
 
                 <a
-                  href="#"
+                  href="https://www.instagram.com/cca.nitd/"
                   aria-label="Instagram"
                   className="text-[#bebcbc] hover:text-[#efefef] transition"
                 >
@@ -65,15 +79,7 @@ export default function Footer() {
                 </a>
 
                 <a
-                  href="#"
-                  aria-label="X"
-                  className="text-[#bebcbc] hover:text-[#efefef] transition"
-                >
-                  <Twitter size={18} />
-                </a>
-
-                <a
-                  href="#"
+                  href="https://www.linkedin.com/company/center-for-cognitive-activities-nit-durgapur/"
                   aria-label="LinkedIn"
                   className="text-[#bebcbc] hover:text-[#efefef] transition"
                 >
