@@ -4,7 +4,6 @@
 !.env.example
 
 # Firebase config (optional but recommended)
-src/firebase.js
 
 # Node stuff
 node_modules/
