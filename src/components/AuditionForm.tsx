@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { db } from "../firebase";
+import { auth, googleProvider, db } from "../firebase.js";
+import { signInWithPopup, onAuthStateChanged } from "firebase/auth";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import {
   Select,
@@ -13,9 +14,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Send, CheckCircle } from "lucide-react";
+import { Loader2, Send, CheckCircle, Mail } from "lucide-react";
 import orb1 from "@/assets/3d-orb-1.png";
 
+/* -------------------- CONSTANT DATA -------------------- */
 
 const cells = [
   { value: "core", label: "Core Cell" },
@@ -52,12 +54,14 @@ const inputStyle = `
   focus:outline-none
   focus:ring-0
   focus:border-[#484848]
-  focus-visible:outline-none
-  focus-visible:ring-0
 `;
+
+/* -------------------- COMPONENT -------------------- */
 
 const AuditionForm = () => {
   const { toast } = useToast();
+
+  const [currentUser, setCurrentUser] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -65,370 +69,250 @@ const AuditionForm = () => {
     name: "",
     email: "",
     rollNumber: "",
-    gender: "", // Added gender field
+    gender: "",
     preferredCell: "",
     department: "",
     motivation: "",
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  /* -------------------- AUTH LISTENER -------------------- */
 
-  if (
-    !formData.name ||
-    !formData.email ||
-    !formData.rollNumber ||
-    !formData.gender ||
-    !formData.preferredCell ||
-    !formData.department ||
-    !formData.motivation
-  ) {
-    toast({
-      title: "Missing fields",
-      description: "Please fill in all required fields.",
-      variant: "destructive",
-    });
-    return;
-  }
-
-  setIsSubmitting(true);
-
-  try {
-    await addDoc(collection(db, "audition_applications"), {
-      ...formData,
-      createdAt: serverTimestamp(),
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUser(user);
+        setFormData((prev) => ({
+          ...prev,
+          name: user.displayName || "",
+          email: user.email || "",
+        }));
+      } else {
+        setCurrentUser(null);
+      }
     });
 
-    setIsSubmitted(true);
+    return () => unsubscribe();
+  }, []);
 
-    toast({
-      title: "Application Submitted!",
-      description: "We'll review your application and get back to you soon.",
-    });
-  } catch (error) {
-    console.error(error);
-    toast({
-      title: "Submission failed",
-      description: "Something went wrong. Please try again.",
-      variant: "destructive",
-    });
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+  /* -------------------- HANDLERS -------------------- */
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleInputChange = (e) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!currentUser) {
+      toast({
+        title: "Not signed in",
+        description: "Please sign in with Google first.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const {
+      name,
+      email,
+      rollNumber,
+      gender,
+      preferredCell,
+      department,
+      motivation,
+    } = formData;
+
+    if (
+      !name ||
+      !email ||
+      !rollNumber ||
+      !gender ||
+      !preferredCell ||
+      !department ||
+      !motivation
+    ) {
+      toast({
+        title: "Missing fields",
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      await addDoc(collection(db, "audition_applications"), {
+        ...formData,
+        uid: currentUser.uid,
+        email: currentUser.email,
+        createdAt: serverTimestamp(),
+      });
+
+      setIsSubmitted(true);
+
+      toast({
+        title: "Application Submitted!",
+        description: "We'll review your application and get back to you soon.",
+      });
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Submission failed",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  /* -------------------- SUCCESS STATE -------------------- */
+
   if (isSubmitted) {
     return (
-      <section className="py-24 bg-[#efefef]">
-        <div className="container mx-auto px-4">
-          <div className="max-w-xl mx-auto bg-[#161616] rounded-2xl p-10 text-center">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+      <section className="py-24 bg-[#0F0F0F]">
+        <div className="container px-4">
+          <div className="max-w-xl mx-auto text-center bg-[#161616] p-10 rounded-2xl border border-white/10">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-[#cca80a] flex items-center justify-center">
               <CheckCircle className="w-10 h-10 text-white" />
             </div>
-
-            <h2 className="text-3xl font-bold text-[#efefef] mb-4">
+            <h2 className="text-3xl font-bold text-white mb-4">
               Application Received!
             </h2>
-
-            <p className="text-gray-400 mb-6">
-              Thank you for applying to CCA. We'll contact you via email soon.Join us on our whatsapp group for further updates.
-              https://chat.whatsapp.com/K6u1mYk1v3pQn
+            <p className="text-gray-400">
+              Thank you for applying to CCA.
+              <br />
+              <a
+                href="https://chat.whatsapp.com/K6u1mYk1v3pQn"
+                target="_blank"
+                rel="noreferrer"
+                className="underline"
+              >
+                Join WhatsApp Group
+              </a>
             </p>
-
-            <Button
-              variant="outline"
-              className="border-[#efefef] text-[#efefef] focus:ring-0 focus:outline-none"
-              onClick={() => {
-                setIsSubmitted(false);
-                setFormData({
-                  name: "",
-                  email: "",
-                  rollNumber: "",
-                  gender: "", // Reset gender
-                  preferredCell: "",
-                  department: "",
-                  motivation: "",
-                });
-              }}
-            >
-              Submit Another Application
-            </Button>
           </div>
         </div>
       </section>
     );
   }
 
+  /* -------------------- MAIN RENDER -------------------- */
+
   return (
     <section id="auditions" className="py-24 bg-[#0F0F0F] relative">
-      <div className="absolute inset-0 flex justify-center items-center opacity-20 pointer-events-none">
-        <img
-          src={orb1}
-          alt=""
-          className="w-[600px] h-[600px] blur-2xl rounded-full"
-        />
-      </div>
+      <img
+        src={orb1}
+        alt=""
+        className="absolute inset-0 m-auto w-[600px] h-[600px] blur-2xl opacity-20"
+      />
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-[#efefef] mb-4">
+          <h2 className="text-4xl font-bold text-white mb-4">
             Audition Application
           </h2>
-          <p className="text-gray-400 max-w-xl mx-auto">
-            Fill out the form below and take the first step towards joining CCA.
+          <p className="text-gray-400">
+            Sign in with Google to continue
           </p>
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="max-w-2xl mx-auto bg-[#161616] rounded-2xl p-8 space-y-6"
-        >
-          {/* Name & Email */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label>Full Name</Label>
-              <Input
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                placeholder="Your name"
-                className={inputStyle}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label>Email</Label>
-              <Input
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                placeholder="your@email.com"
-                className={inputStyle}
-              />
-            </div>
+        {!currentUser && (
+          <div className="max-w-md mx-auto">
+            <Button
+              onClick={() => signInWithPopup(auth, googleProvider)}
+              className="w-full bg-white text-black py-6"
+            >
+              <Mail className="mr-2" /> Sign in with Google
+            </Button>
           </div>
+        )}
 
-          {/* Roll Number & Gender */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label>Roll Number</Label>
+        {currentUser && (
+          <form
+            onSubmit={handleSubmit}
+            className="max-w-2xl mx-auto bg-[#161616] p-8 rounded-2xl space-y-6"
+          >
+            {/* Name & Email */}
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <Label>Full Name</Label>
+                <Input
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className={inputStyle}
+                />
+              </div>
+              <div>
+                <Label>Email</Label>
+                <Input
+                  name="email"
+                  readOnly
+                  value={formData.email}
+                  className={inputStyle}
+                />
+              </div>
+            </div>
+
+            {/* Roll & Gender */}
+            <div className="grid md:grid-cols-2 gap-4">
               <Input
                 name="rollNumber"
+                placeholder="Roll Number"
                 value={formData.rollNumber}
                 onChange={handleInputChange}
-                placeholder="25A80043"
                 className={inputStyle}
               />
-            </div>
 
-            <div className="space-y-2">
-              <Label>Gender</Label>
               <Select
                 value={formData.gender}
-                onValueChange={(value) =>
-                  setFormData((prev) => ({ ...prev, gender: value }))
+                onValueChange={(v) =>
+                  setFormData((p) => ({ ...p, gender: v }))
                 }
               >
-                <SelectTrigger
-                  className="
-                    bg-[#161616]
-                    border-[#0F0F0F]
-                    text-[#efefef]
-                    w-full
-                    focus:outline-none
-                    focus:ring-0
-                    focus-visible:outline-none
-                    focus-visible:ring-0
-                  "
-                >
-                  <SelectValue placeholder="Select gender" />
+                <SelectTrigger className={inputStyle}>
+                  <SelectValue placeholder="Gender" />
                 </SelectTrigger>
-                <SelectContent
-                  className="
-                    bg-[#161616]
-                    border-[#0F0F0F]
-                    text-[#efefef]
-                  "
-                >
-                  {genders.map((gender) => (
-                    <SelectItem
-                      key={gender.value}
-                      value={gender.value}
-                      className="
-                        text-[#efefef]
-                        focus:bg-[#2a2a2a]
-                        focus:text-[#efefef]
-                        hover:bg-[#2a2a2a]
-                        data-[highlighted]:bg-[#2a2a2a]
-                        data-[highlighted]:text-[#efefef]
-                        focus:outline-none
-                        focus:ring-0
-                      "
-                    >
-                      {gender.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {/* Preferred Cell & Department */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label>Preferred Cell</Label>
-              <Select
-                value={formData.preferredCell}
-                onValueChange={(value) =>
-                  setFormData((prev) => ({ ...prev, preferredCell: value }))
-                }
-              >
-                <SelectTrigger
-                  className="
-                    bg-[#161616]
-                    border-[#0F0F0F]
-                    text-[#efefef]
-                    w-full
-                    focus:outline-none
-                    focus:ring-0
-                    focus-visible:outline-none
-                    focus-visible:ring-0
-                  "
-                >
-                  <SelectValue placeholder="Select a cell" />
-                </SelectTrigger>
-                <SelectContent
-                  className="
-                    bg-[#161616]
-                    border-[#0F0F0F]
-                    text-[#efefef]
-                  "
-                >
-                  {cells.map((cell) => (
-                    <SelectItem
-                      key={cell.value}
-                      value={cell.value}
-                      className="
-                        text-[#efefef]
-                        focus:bg-[#2a2a2a]
-                        focus:text-[#efefef]
-                        hover:bg-[#2a2a2a]
-                        data-[highlighted]:bg-[#2a2a2a]
-                        data-[highlighted]:text-[#efefef]
-                        focus:outline-none
-                        focus:ring-0
-                      "
-                    >
-                      {cell.label}
+                <SelectContent>
+                  {genders.map((g) => (
+                    <SelectItem key={g.value} value={g.value}>
+                      {g.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <Label>Department</Label>
-              <Select
-                value={formData.department}
-                onValueChange={(value) =>
-                  setFormData((prev) => ({ ...prev, department: value }))
-                }
-              >
-                <SelectTrigger
-                  className="
-                    bg-[#161616]
-                    border-[#0F0F0F]
-                    text-[#efefef]
-                    w-full
-                    focus:outline-none
-                    focus:ring-0
-                    focus-visible:outline-none
-                    focus-visible:ring-0
-                  "
-                >
-                  <SelectValue placeholder="Select department" />
-                </SelectTrigger>
-                <SelectContent
-                  className="
-                    bg-[#161616]
-                    border-[#0F0F0F]
-                    text-[#efefef]
-                  "
-                >
-                  {departments.map((dept) => (
-                    <SelectItem
-                      key={dept.value}
-                      value={dept.value}
-                      className="
-                        text-[#efefef]
-                        focus:bg-[#2a2a2a]
-                        focus:text-[#efefef]
-                        hover:bg-[#2a2a2a]
-                        data-[highlighted]:bg-[#2a2a2a]
-                        data-[highlighted]:text-[#efefef]
-                        focus:outline-none
-                        focus:ring-0
-                      "
-                    >
-                      {dept.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {/* Motivation */}
-          <div className="space-y-2">
-            <Label>Why do you want to join?</Label>
+            {/* Motivation */}
             <Textarea
               name="motivation"
               rows={4}
               value={formData.motivation}
               onChange={handleInputChange}
-              placeholder="Tell us about yourself..."
+              placeholder="Why do you want to join?"
               className={inputStyle}
             />
-          </div>
 
-          {/* Submit */}
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            className="
-              w-full
-              bg-[#efefef]
-              text-[#0F0F0F]
-              py-6
-              text-lg
-              hover:bg-[#e0e0e0]
-              focus:outline-none
-              focus:ring-0
-            "
-          >
-            {isSubmitting ? (
-              <>
-                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                Submitting...
-              </>
-            ) : (
-              <>
-                <Send className="w-5 h-5 mr-2" />
-                Submit Application
-              </>
-            )}
-          </Button>
-        </form>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full bg-white text-black py-6"
+            >
+              {isSubmitting ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                <>
+                  <Send className="mr-2" /> Submit
+                </>
+              )}
+            </Button>
+          </form>
+        )}
       </div>
     </section>
   );

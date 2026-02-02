@@ -82,8 +82,8 @@ const CellsSection = () => {
                 hover:-translate-y-2
                 border border-white/10
                 hover:border-purple-400/40
+                bg-[#161616]
               "
-              style={{ backgroundColor: "#161616" }}
             >
               {/* Hover glow + elevation */}
               <div

@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -14,9 +15,14 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
+/* ✅ EXPORT AUTH */
+export const auth = getAuth(app);
+
 // ✅ Firestore initialized ONLY here
 export const db = getFirestore(app);
 
 // ✅ Analytics (safe for Vercel / SSR)
 export const analytics =
   typeof window !== "undefined" ? getAnalytics(app) : null;
+
+export const googleProvider = new GoogleAuthProvider();
