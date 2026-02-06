@@ -1,9 +1,4 @@
 import { Lightbulb, Cpu, FlaskConical, Users } from "lucide-react";
-import Core from "../assets/cells/core.png"
-import Wdct from "../assets/cells/wdct.png"
-import Ecell from "../assets/cells/ecell.png"
-import Rnd from "../assets/cells/rnd.png"
-import Robo from "../assets/cells/robo.png"
 
 const features = [
   {
@@ -37,8 +32,7 @@ const AboutSection = () => {
     <section
       id="about"
       className="
-        relative
-        z-20
+        relative z-20
         -mt-[clamp(3rem,14vw,6rem)]
         pt-[clamp(6rem,14vw,10rem)]
         pb-24
@@ -56,7 +50,7 @@ const AboutSection = () => {
       />
 
       <div className="container mx-auto px-6 max-w-7xl">
-        {/* Heading */}
+        {/* HEADING */}
         <div className="text-center mb-16 space-y-4">
           <h2 className="text-4xl md:text-5xl font-bold text-[#efefef]">
             What We Do
@@ -69,7 +63,7 @@ const AboutSection = () => {
           </p>
         </div>
 
-        {/* Feature Cards */}
+        {/* FEATURE CARDS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature) => {
             const Icon = feature.icon;
@@ -78,53 +72,65 @@ const AboutSection = () => {
               <div
                 key={feature.title}
                 className="
-                  relative
-                  group
-                  rounded-2xl
-                  p-6
-                  transition-all
-                  duration-300
-                  hover:-translate-y-3
-                  border border-white/10
-                  hover:border-purple-400/40
+                  relative group
+                  rounded-2xl p-6
+                  overflow-hidden
+                  transition-all duration-300
+                  border border-white/20
+                  bg-[#161616]
                 "
-                style={{
-                  backgroundColor: "#161616",
-                  boxShadow: "0 0 0 rgba(0,0,0,0)",
-                }}
               >
-                {/* STRONG + CLEAN hover shadow */}
-                <div
-                  className="
-                    absolute
-                    inset-0
-                    rounded-2xl
-                    opacity-0
-                    group-hover:opacity-100
-                    transition-opacity
-                    duration-300
-                    pointer-events-none
-                  "
-                  style={{
-                    boxShadow:
-                      "0 18px 40px rgba(0,0,0,0.65), 0 0 45px rgba(168,85,247,0.35)",
-                  }}
-                />
-
-                {/* Icon container */}
-                <div className="relative w-12 h-12 flex items-center justify-center rounded-xl mb-4">
-                  {/* Icon glow */}
-                  <div className="absolute inset-0 rounded-xl bg-purple-500/40 blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <Icon className="relative w-6 h-6 text-[#efefef]" />
+                {/* PIXEL EFFECT */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                  <pixel-canvas data-gap="6" data-speed="80"></pixel-canvas>
                 </div>
 
-                <h3 className="text-xl font-semibold text-[#efefef] mb-2">
-                  {feature.title}
-                </h3>
+                {/* GLOW */}
+                <div
+                  className="
+                    absolute inset-0 rounded-2xl
+                    opacity-0 group-hover:opacity-100
+                    transition-opacity duration-300
+                    pointer-events-none
+                  "
+                />
 
-                <p className="text-sm leading-relaxed text-gray-400">
-                  {feature.description}
-                </p>
+                {/* CONTENT */}
+                <div className="relative z-10 flex flex-col justify-center items-center">
+                  {/* ICON + TITLE */}
+                  <div
+                    className=" flex flex-col justify-center items-center
+                      transform transition-all duration-300 ease-out
+                      group-hover:-translate-y-3
+                      group-hover:scale-90
+                    "
+                  >
+                    {/* ICON */}
+                    <div className="relative w-12 h-12 flex items-center justify-center rounded-xl mb-2">
+                      <div className="absolute inset-0 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <Icon className="relative w-6 h-6 text-[#efefef]" />
+                    </div>
+
+                    {/* TITLE */}
+                    <h3 className="text-xl font-semibold text-[#efefef] mb-2">
+                      {feature.title}
+                    </h3>
+                  </div>
+
+                  {/* DESCRIPTION */}
+                  <p
+                    className=" text-center
+                      text-sm leading-relaxed text-[#EFEFEF]
+                      transform scale-80 translate-y-3 opacity-0
+                      transition-all duration-300 ease-out
+                      group-hover:scale-100
+                      group-hover:translate-y-0
+                      group-hover:opacity-100
+                    "
+                  >
+                    {feature.description}
+                  </p>
+                </div>
               </div>
             );
           })}

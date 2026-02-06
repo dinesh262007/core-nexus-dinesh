@@ -81,7 +81,7 @@ const CellsSection = () => {
                 duration-300
                 hover:-translate-y-2
                 border border-white/10
-                hover:border-purple-400/40
+                hover:border-teal-400/20
                 bg-[#161616]
               "
             >
@@ -95,7 +95,7 @@ const CellsSection = () => {
                 "
                 style={{
                   boxShadow:
-                    "0 18px 40px rgba(0,0,0,0.65), 0 0 40px rgba(168,85,247,0.25)",
+                    "0 0 40px rgba(45,212,191,0.22)",
                 }}
               />
 
@@ -107,7 +107,7 @@ const CellsSection = () => {
                 {/* Cell Image */}
                 <div className="relative w-24 h-24 md:w-32 md:h-32 flex-shrink-0">
                   {/* image glow */}
-                  <div className="absolute inset-0 rounded-xl bg-purple-500/25 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 rounded-xl bg-teal-400/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                   <img
                     src={cell.image}

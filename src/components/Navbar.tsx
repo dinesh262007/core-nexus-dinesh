@@ -2,12 +2,15 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import ccalogo from "@/assets/ccalogo.png"; // adjust path if needed
+import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
+import { auth, googleProvider } from "../firebase";
 
 const navLinks = [
   { href: "#home", label: "Home" },
   { href: "#about", label: "About" },
   { href: "#cells", label: "Cells" },
   { href: "#aarohan", label: "Aarohan" },
+  { href: "#auditions", label: "Apply" },
 ];
 
 const Navbar = () => {
@@ -30,6 +33,31 @@ const Navbar = () => {
     setIsMobileMenuOpen(false);
   };
 
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleSignIn = async () => {
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (err) {
+      console.error("Sign-in error:", err);
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+    } catch (err) {
+      console.error("Sign-out error:", err);
+    }
+  };
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -37,7 +65,6 @@ const Navbar = () => {
       }`}
     >
       <div className="container mx-auto px-4 flex items-center justify-between">
-        
         {/* Logo */}
         <button
           onClick={() => scrollToSection("#home")}
@@ -61,11 +88,11 @@ const Navbar = () => {
               {link.label}
             </button>
           ))}
-          <Button onClick={() => scrollToSection("#auditions")}
-  className="bg-black text-foreground hover:text-black hover:bg-primary/10 transition-colors duration-200 px-6"
- >
-
-            Apply Now
+          <Button
+            onClick={user ? handleSignOut : handleSignIn}
+            className="bg-black text-foreground hover:text-black hover:bg-primary/10 transition-colors duration-200 px-6"
+          >
+            {user ? "Sign Out" : "Sign In"}
           </Button>
         </div>
 
@@ -92,10 +119,10 @@ const Navbar = () => {
               </button>
             ))}
             <Button
-              onClick={() => scrollToSection("#auditions")}
-              className="gradient-bg text-foreground w-full mt-2"
+              onClick={user ? handleSignOut : handleSignIn}
+              className="bg-black text-foreground hover:text-black hover:bg-primary/10 transition-colors duration-200 px-6"
             >
-              Apply Now
+              {user ? "Sign Out" : "Sign In"}
             </Button>
           </div>
         </div>
