@@ -144,8 +144,10 @@ import { db, auth } from "../firebase";
 import { collection, query, orderBy, getDocs } from "firebase/firestore";
 import { exportApplicationsByCell } from "../lib/exportResponses";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { signOut } from "firebase/auth";
 
 const CELLS = ["wdct", "robo", "core", "ecell", "rnd"];
+
 
 export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -163,6 +165,10 @@ export default function Admin() {
       setError("Invalid admin credentials");
     }
   };
+
+  useEffect(() => {
+    signOut(auth); // force logout on admin page load
+  }, []);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
