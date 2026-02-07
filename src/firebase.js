@@ -1,7 +1,14 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, query, collection, orderBy, getDocs } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  setPersistence,
+  browserLocalPersistence,
+} from "firebase/auth";
+
+/* ---------------- FIREBASE CONFIG ---------------- */
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -15,16 +22,21 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-/* ✅ EXPORT AUTH */
+/* ---------------- AUTH ---------------- */
+
 export const auth = getAuth(app);
 
-// ✅ Firestore initialized ONLY here
-export const db = getFirestore(app);
+/* 🔴 IMPORTANT: keeps user logged in after refresh */
+setPersistence(auth, browserLocalPersistence);
 
-// ✅ Analytics (safe for Vercel / SSR)
-export const analytics =
-  typeof window !== "undefined" ? getAnalytics(app) : null;
-
+/* Google provider */
 export const googleProvider = new GoogleAuthProvider();
 
+/* ---------------- DATABASE ---------------- */
 
+export const db = getFirestore(app);
+
+/* ---------------- ANALYTICS ---------------- */
+
+export const analytics =
+  typeof window !== "undefined" ? getAnalytics(app) : null;

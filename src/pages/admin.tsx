@@ -140,45 +140,63 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { db } from "../firebase";
+import { db, auth } from "../firebase";
 import { collection, query, orderBy, getDocs } from "firebase/firestore";
 import { exportApplicationsByCell } from "../lib/exportResponses";
-
-const ADMIN_PASSWORD = "speed force";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 const CELLS = ["wdct", "robo", "core", "ecell", "rnd"];
 
 export default function Admin() {
-  const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState("");
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedCell, setSelectedCell] = useState(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    if (password === ADMIN_PASSWORD) {
-      setIsAuthenticated(true);
-      setError("");
-    } else {
-      setError("Incorrect password");
+  const handleLogin = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (err) {
+      setError("Invalid admin credentials");
     }
   };
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
+    });
+
+    return () => unsub();
+  }, []);
 
   useEffect(() => {
     if (!isAuthenticated) return;
 
     const fetchApplications = async () => {
       setLoading(true);
-      const q = query(
-        collection(db, "audition_applications"),
-        orderBy("createdAt", "desc")
-      );
-      const snapshot = await getDocs(q);
-      setApplications(
-        snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-      );
-      setLoading(false);
+      try {
+        const q = query(
+          collection(db, "audition_applications"),
+          orderBy("createdAt", "desc"),
+        );
+
+        const snapshot = await getDocs(q);
+
+        setApplications(
+          snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })),
+        );
+      } catch (err) {
+        console.error("FETCH FAILED:", err);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchApplications();
@@ -192,8 +210,16 @@ export default function Admin() {
           <h1 className="text-xl font-bold text-center mb-4">Admin Login</h1>
 
           <Input
+            type="email"
+            placeholder="Admin email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="mb-4"
+          />
+
+          <Input
             type="password"
-            placeholder="Enter admin password"
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="mb-4"
@@ -213,9 +239,7 @@ export default function Admin() {
 
   /* FILTERED DATA */
   const filteredApps = selectedCell
-    ? applications.filter(
-        (app) => app.preferredCell === selectedCell
-      )
+    ? applications.filter((app) => app.preferredCells?.includes(selectedCell))
     : [];
 
   /* 📋 DASHBOARD */
@@ -235,9 +259,8 @@ export default function Admin() {
             <p className="text-sm text-muted-foreground uppercase">{cell}</p>
             <p className="text-2xl font-bold">
               {
-                applications.filter(
-                  (a) => a.preferredCell === cell
-                ).length
+                applications.filter((a) => a.preferredCells?.includes(cell))
+                  .length
               }
             </p>
           </div>
@@ -284,9 +307,7 @@ export default function Admin() {
           Select a cell to view applications.
         </p>
       ) : filteredApps.length === 0 ? (
-        <p className="text-muted-foreground">
-          No applications for this cell.
-        </p>
+        <p className="text-muted-foreground">No applications for this cell.</p>
       ) : (
         <div className="overflow-x-auto rounded-lg border">
           <table className="w-full text-sm">
@@ -295,6 +316,7 @@ export default function Admin() {
                 <th className="p-3 text-left">Name</th>
                 <th className="p-3 text-left">Email</th>
                 <th className="p-3 text-left">Roll No</th>
+                <th className="p-3 text-left">Phone</th>
                 <th className="p-3 text-left">Gender</th>
                 <th className="p-3 text-left">Dept</th>
                 <th className="p-3 text-left">Motivation</th>
@@ -308,6 +330,7 @@ export default function Admin() {
                   <td className="p-3">{app.name}</td>
                   <td className="p-3">{app.email}</td>
                   <td className="p-3">{app.rollNumber}</td>
+                  <td className="p-3">{app.phone || "-"}</td>
                   <td className="p-3 capitalize">{app.gender}</td>
                   <td className="p-3 uppercase">{app.department}</td>
                   <td className="p-3 max-w-xs whitespace-pre-wrap">

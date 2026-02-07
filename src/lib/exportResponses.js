@@ -1,121 +1,138 @@
-// import { collection, getDocs, Timestamp } from "firebase/firestore";
 // import { db } from "../firebase";
+// import { collection, query, where, getDocs } from "firebase/firestore";
 
-// export const exportApplications = async () => {
-//   const snapshot = await getDocs(
-//     collection(db, "audition_applications")
+// export const exportApplicationsByCell = async (cell) => {
+//   const q = query(
+//     collection(db, "audition_applications"),
+//     where("preferredCell", "==", cell)
 //   );
 
+//   const snapshot = await getDocs(q);
+
 //   if (snapshot.empty) {
-//     alert("No applications found");
+//     alert(`No applications for ${cell.toUpperCase()}`);
 //     return;
 //   }
 
-//   // ✅ FIXED COLUMN ORDER
-//   const headers = [
-//     "id",
-//     "name",
-//     "email",
-//     "rollNumber",
-//     "gender",
-//     "department",
-//     "preferredCell",
-//     "motivation",
+//   const rows = [
+//     [
+//       "Name",
+//       "Email",
+//       "Roll Number",
+//       "Gender",
+//       "Department",
+//       "Preferred Cell",
+//       "Motivation",
+//       "Submitted At",
+//     ],
 //   ];
 
-//   const rows = snapshot.docs.map((doc) => {
-//     const data = doc.data();
-
-//     return {
-//       id: doc.id,
-//       name: data.name ?? "",
-//       email: data.email ?? "",
-//       rollNumber: data.rollNumber ?? "",
-//       gender: data.gender ?? "",
-//       department: data.department ?? "",
-//       preferredCell: data.preferredCell ?? "",
-//       motivation: data.motivation ?? "",
-//     };
+//   snapshot.docs.forEach((doc) => {
+//     const d = doc.data();
+//     rows.push([
+//       d.name || "",
+//       d.email || "",
+//       d.rollNumber || "",
+//       d.gender || "",
+//       d.department || "",
+//       d.preferredCell || "",
+//       (d.motivation || "").replace(/\n/g, " "),
+//       d.createdAt?.toDate
+//         ? d.createdAt.toDate().toLocaleString()
+//         : "",
+//     ]);
 //   });
 
-//   const csvRows = [
-//     headers.join(","),
+//   const csvContent = rows.map((r) => r.join(",")).join("\n");
 
-//     ...rows.map((row) =>
-//       headers
-//         .map((key) =>
-//           `"${String(row[key]).replace(/"/g, '""')}"`
-//         )
-//         .join(",")
-//     ),
-//   ];
+//   const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+//   const url = URL.createObjectURL(blob);
 
-//   const csv = csvRows.join("\n");
-
-//   const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-//   const url = window.URL.createObjectURL(blob);
-
-//   const a = document.createElement("a");
-//   a.href = url;
-//   a.download = "audition_applications_clean.csv";
-//   a.click();
-
-//   window.URL.revokeObjectURL(url);
+//   const link = document.createElement("a");
+//   link.href = url;
+//   link.download = `auditions_${cell}.csv`;
+//   link.click();
 // };
-
 
 import { db } from "../firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 
+/* ---------- CSV ESCAPE FUNCTION ---------- */
+const escapeCSV = (value) => {
+  if (value === null || value === undefined) return "";
+  const str = String(value);
+  return `"${str.replace(/"/g, '""')}"`;
+};
+
+/* ---------- EXPORT BY CELL ---------- */
+
 export const exportApplicationsByCell = async (cell) => {
-  const q = query(
-    collection(db, "audition_applications"),
-    where("preferredCell", "==", cell)
-  );
+  try {
+    /* 🔴 IMPORTANT: array-contains for preferredCells */
+    const q = query(
+      collection(db, "audition_applications"),
+      where("preferredCells", "array-contains", cell),
+    );
 
-  const snapshot = await getDocs(q);
+    const snapshot = await getDocs(q);
 
-  if (snapshot.empty) {
-    alert(`No applications for ${cell.toUpperCase()}`);
-    return;
+    if (snapshot.empty) {
+      alert(`No applications for ${cell.toUpperCase()}`);
+      return;
+    }
+
+    const rows = [
+      [
+        "Name",
+        "Email",
+        "Roll Number",
+        "Phone",
+        "Gender",
+        "Department",
+        "Preferred Cells",
+        "Motivation",
+        "Submitted At",
+      ],
+    ];
+
+    snapshot.docs.forEach((doc) => {
+      const d = doc.data();
+
+      rows.push([
+        d.name || "",
+        d.email || "",
+        d.rollNumber || "",
+        d.phone || "",
+        d.gender || "",
+        d.department || "",
+        (d.preferredCells || []).join(" | "),
+        (d.motivation || "").replace(/\n/g, " "),
+        d.createdAt && d.createdAt.toDate
+          ? d.createdAt.toDate().toLocaleString()
+          : "",
+      ]);
+    });
+
+    /* ---- build csv ---- */
+
+    const csvContent = rows
+      .map((row) => row.map(escapeCSV).join(","))
+      .join("\n");
+
+    const blob = new Blob([csvContent], {
+      type: "text/csv;charset=utf-8;",
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `auditions_${cell}.csv`;
+    link.click();
+
+    URL.revokeObjectURL(url);
+  } catch (err) {
+    console.error(err);
+    alert("Export failed. Check console.");
   }
-
-  const rows = [
-    [
-      "Name",
-      "Email",
-      "Roll Number",
-      "Gender",
-      "Department",
-      "Preferred Cell",
-      "Motivation",
-      "Submitted At",
-    ],
-  ];
-
-  snapshot.docs.forEach((doc) => {
-    const d = doc.data();
-    rows.push([
-      d.name || "",
-      d.email || "",
-      d.rollNumber || "",
-      d.gender || "",
-      d.department || "",
-      d.preferredCell || "",
-      (d.motivation || "").replace(/\n/g, " "),
-      d.createdAt?.toDate
-        ? d.createdAt.toDate().toLocaleString()
-        : "",
-    ]);
-  });
-
-  const csvContent = rows.map((r) => r.join(",")).join("\n");
-
-  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = `auditions_${cell}.csv`;
-  link.click();
 };

@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Send, CheckCircle, Mail} from "lucide-react";
+import { Loader2, Send, CheckCircle, Mail } from "lucide-react";
 import orb1 from "@/assets/3d-orb-1.png";
 
 /* -------------------- CONSTANT DATA -------------------- */
@@ -69,8 +69,9 @@ const AuditionForm = () => {
     name: "",
     email: "",
     rollNumber: "",
+    phone: "",
     gender: "",
-    preferredCell: "",
+    preferredCells: [],
     department: "",
     motivation: "",
   });
@@ -119,8 +120,9 @@ const AuditionForm = () => {
       name,
       email,
       rollNumber,
+      phone,
       gender,
-      preferredCell,
+      preferredCells,
       department,
       motivation,
     } = formData;
@@ -129,8 +131,9 @@ const AuditionForm = () => {
       !name ||
       !email ||
       !rollNumber ||
+      !phone ||
       !gender ||
-      !preferredCell ||
+      !preferredCells.length ||
       !department ||
       !motivation
     ) {
@@ -143,7 +146,7 @@ const AuditionForm = () => {
     }
 
     setIsSubmitting(true);
-    
+
     try {
       console.log("form data: ", formData);
       await addDoc(collection(db, "audition_applications"), {
@@ -204,6 +207,28 @@ const AuditionForm = () => {
     );
   }
 
+  const toggleCellPreference = (cellValue) => {
+    setFormData((prev) => {
+      const exists = prev.preferredCells.includes(cellValue);
+
+      // remove
+      if (exists) {
+        return {
+          ...prev,
+          preferredCells: prev.preferredCells.filter((c) => c !== cellValue),
+        };
+      }
+
+      // add (limit to 5)
+      if (prev.preferredCells.length >= 5) return prev;
+
+      return {
+        ...prev,
+        preferredCells: [...prev.preferredCells, cellValue],
+      };
+    });
+  };
+
   /* -------------------- MAIN RENDER -------------------- */
 
   return (
@@ -241,183 +266,148 @@ const AuditionForm = () => {
             className="max-w-2xl mx-auto bg-[#161616] p-8 rounded-2xl space-y-6"
           >
             {/* Name & Email */}
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <Label>Full Name</Label>
-                <Input
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className={inputStyle}
-                />
-              </div>
-              <div>
-                <Label>Email</Label>
-                <Input
-                  name="email"
-                  readOnly
-                  value={formData.email}
-                  className={inputStyle}
-                  style={{color: "gray"}}
-                />
+            <div className="space-y-4">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Full Name</Label>
+                  <Input
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className={inputStyle}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Email</Label>
+                  <Input
+                    name="email"
+                    readOnly
+                    value={formData.email}
+                    className={inputStyle}
+                    style={{ color: "gray" }}
+                  />
+                </div>
               </div>
             </div>
 
-            {/* Roll & Gender */}
-            <div className="grid md:grid-cols-2 gap-4">
-              <Input
-                name="rollNumber"
-                placeholder="Roll Number"
-                value={formData.rollNumber}
-                onChange={handleInputChange}
-                className={inputStyle}
-              />
+            {/* Roll & Phone no. */}
+            <div className="space-y-4">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Roll Number</Label>
+                  <Input
+                    name="rollNumber"
+                    placeholder="e.g. 23CSXXXX"
+                    value={formData.rollNumber}
+                    onChange={handleInputChange}
+                    className={inputStyle}
+                  />
+                </div>
 
-              <Select
-                value={formData.gender}
-                onValueChange={(v) => setFormData((p) => ({ ...p, gender: v }))}
-              >
-                <SelectTrigger className="
-                    bg-[#161616]
-                    border-[#0F0F0F]
-                    text-[#efefef]
-                    w-full
-                    focus:outline-none
-                    focus:ring-0
-                    focus-visible:outline-none
-                    focus-visible:ring-0
-                  ">
-                  <SelectValue placeholder="Gender" />
-                </SelectTrigger>
-                <SelectContent className="
-                    bg-[#161616]
-                    border-[#0F0F0F]
-                    text-[#efefef]
-                  ">
-                  {genders.map((g) => (
-                    <SelectItem key={g.value} value={g.value} className="
-                        text-[#efefef]
-                        focus:bg-[#2a2a2a]
-                        focus:text-[#efefef]
-                        hover:bg-[#2a2a2a]
-                        data-[highlighted]:bg-[#2a2a2a]
-                        data-[highlighted]:text-[#efefef]
-                        focus:outline-none
-                        focus:ring-0
-                      ">
-                      {g.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                <div className="space-y-2">
+                  <Label>Phone Number</Label>
+                  <Input
+                    name="phone"
+                    placeholder="10 digit mobile number"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    className={inputStyle}
+                  />
+                </div>
+              </div>
             </div>
 
-            {/* Preferred Cell & Department */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Preferred Cell</Label>
-                <Select
-                  value={formData.preferredCell}
-                  onValueChange={(value) =>
-                    setFormData((prev) => ({ ...prev, preferredCell: value }))
-                  }
-                >
-                  <SelectTrigger
-                    className="
-                    bg-[#161616]
-                    border-[#0F0F0F]
-                    text-[#efefef]
-                    w-full
-                    focus:outline-none
-                    focus:ring-0
-                    focus-visible:outline-none
-                    focus-visible:ring-0
-                  "
+            {/* Department & Gender */}
+            <div className="space-y-4">
+              <div className="grid md:grid-cols-2 gap-4">
+                {/* Department */}
+                <div className="space-y-2">
+                  <Label>Department</Label>
+                  <Select
+                    value={formData.department}
+                    onValueChange={(value) =>
+                      setFormData((prev) => ({ ...prev, department: value }))
+                    }
                   >
-                    <SelectValue placeholder="Select a cell" />
-                  </SelectTrigger>
-                  <SelectContent
-                    className="
-                    bg-[#161616]
-                    border-[#0F0F0F]
-                    text-[#efefef]
-                  "
-                  >
-                    {cells.map((cell) => (
-                      <SelectItem
-                        key={cell.value}
-                        value={cell.value}
-                        className="
-                        text-[#efefef]
-                        focus:bg-[#2a2a2a]
-                        focus:text-[#efefef]
-                        hover:bg-[#2a2a2a]
-                        data-[highlighted]:bg-[#2a2a2a]
-                        data-[highlighted]:text-[#efefef]
-                        focus:outline-none
-                        focus:ring-0
-                      "
-                      >
-                        {cell.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+                    <SelectTrigger className="bg-[#161616] border-[#0F0F0F] text-[#efefef] w-full focus:outline-none focus:ring-0">
+                      <SelectValue placeholder="Select department" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-[#161616] border-[#0F0F0F] text-[#efefef]">
+                      {departments.map((dept) => (
+                        <SelectItem key={dept.value} value={dept.value}>
+                          {dept.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              <div className="space-y-2">
-                <Label>Department</Label>
-                <Select
-                  value={formData.department}
-                  onValueChange={(value) =>
-                    setFormData((prev) => ({ ...prev, department: value }))
-                  }
-                >
-                  <SelectTrigger
-                    className="
-                    bg-[#161616]
-                    border-[#0F0F0F]
-                    text-[#efefef]
-                    w-full
-                    focus:outline-none
-                    focus:ring-0
-                    focus-visible:outline-none
-                    focus-visible:ring-0
-                  "
+                {/* Gender */}
+                <div className="space-y-2">
+                  <Label>Gender</Label>
+                  <Select
+                    value={formData.gender}
+                    onValueChange={(v) =>
+                      setFormData((p) => ({ ...p, gender: v }))
+                    }
                   >
-                    <SelectValue placeholder="Select department" />
-                  </SelectTrigger>
-                  <SelectContent
-                    className="
-                    bg-[#161616]
-                    border-[#0F0F0F]
-                    text-[#efefef]
-                  "
-                  >
-                    {departments.map((dept) => (
-                      <SelectItem
-                        key={dept.value}
-                        value={dept.value}
-                        className="
-                        text-[#efefef]
-                        focus:bg-[#2a2a2a]
-                        focus:text-[#efefef]
-                        hover:bg-[#2a2a2a]
-                        data-[highlighted]:bg-[#2a2a2a]
-                        data-[highlighted]:text-[#efefef]
-                        focus:outline-none
-                        focus:ring-0
-                      "
-                      >
-                        {dept.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                    <SelectTrigger className="bg-[#161616] border-[#0F0F0F] text-[#efefef] w-full focus:outline-none focus:ring-0">
+                      <SelectValue placeholder="Select gender" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-[#161616] border-[#0F0F0F] text-[#efefef]">
+                      {genders.map((g) => (
+                        <SelectItem key={g.value} value={g.value}>
+                          {g.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+
+            {/* Preferred Cells UI */}
+            <div className="space-y-3">
+              <Label>Preferred Cell(s)</Label>
+              <p className="text-sm text-gray-400">
+                Please select the cells in your preferred sequence.
+              </p>
+
+              <div className="flex flex-wrap gap-4 pt-2">
+                {cells.map((cell) => {
+                  const index = formData.preferredCells.indexOf(cell.value);
+                  const selected = index !== -1;
+
+                  return (
+                    <button
+                      type="button"
+                      key={cell.value}
+                      onClick={() => toggleCellPreference(cell.value)}
+                      className={`
+                        relative px-4 py-2 md:px-6 md:py-3 rounded-full border transition-all duration-300 
+                        ${
+                          selected
+                            ? "border-[#8ec5ff] bg-[#2a1a12] text-white"
+                            : "border-[#2a2a2a] bg-[#1b1b1b] text-gray-300 hover:bg-[#252525]"
+                        }
+                      `}
+                    >
+                      {selected && (
+                        <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-white text-black flex items-center justify-center text-sm font-bold shadow-md">
+                          {index + 1}
+                        </div>
+                      )}
+
+                      {cell.label}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
             {/* Motivation */}
+            <h4>Why CCA?</h4>
             <Textarea
               name="motivation"
               rows={4}
