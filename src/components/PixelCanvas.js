@@ -116,7 +116,7 @@ class PixelCanvas extends HTMLElement {
 
   get color() {
     const raw = getComputedStyle(this).getPropertyValue("--pixel-color").trim();
-    return raw ? `hsl(${raw})` : "hsl(173 80% 40%)";
+    return raw ? `hsl(${raw})` : "hsl(220 5% 54%)";
   }
 
   onEnter() {

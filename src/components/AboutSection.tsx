@@ -78,6 +78,7 @@ const AboutSection = () => {
                   transition-all duration-300
                   border border-white/20
                   bg-[#161616]
+                  hover:-translate-y-1
                 "
               >
                 {/* PIXEL EFFECT */}
