@@ -6,11 +6,7 @@ import { Label } from "@/components/ui/label";
 import { auth, googleProvider, db } from "../firebase.js";
 import { signInWithPopup, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import {
-  collection,
-  addDoc,
-  serverTimestamp,
-} from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import {
   Select,
   SelectContent,
@@ -312,8 +308,24 @@ const AuditionForm = () => {
   const navigate = useNavigate();
   if (isSubmitted) {
     return (
-      <section className="bg-[#0F0F0F] min-h-screen flex items-center justify-center">
-        <div className="w-full px-4">
+      <section
+        className="bg-[#0F0F0F] min-h-screen flex items-center justify-center"
+        style={{
+          minHeight: currentUser ? "100vh" : "100vh",
+          paddingTop: currentUser ? "6rem" : "0",
+          paddingBottom: currentUser ? "6rem" : "0",
+          backgroundImage: `url("https://www.transparenttextures.com/patterns/grid-me.png")`,
+          backgroundRepeat: "repeat",
+          backgroundSize: "auto",
+        }}
+      >
+        {/* Left fade */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-[55vw] bg-gradient-to-r from-[#0F0F0F] to-transparent z-0" />
+
+        {/* Right fade */}
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-[55vw] bg-gradient-to-l from-[#0F0F0F] to-transparent z-0" />
+
+        <div className="w-full px-4 z-10">
           <div className="max-w-xl mx-auto text-center bg-[#161616] p-10 rounded-2xl border border-white/10">
             <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-green-500/90 flex items-center justify-center">
               <CheckCircle className="w-10 h-10 text-white" />
@@ -573,18 +585,27 @@ const AuditionForm = () => {
   return (
     <section
       id="auditions"
-      className="bg-[#0F0F0F] relative flex items-center justify-center"
+      className="relative flex items-center justify-center bg-[#0F0F0F]"
       style={{
         minHeight: currentUser ? "100vh" : "100vh",
         paddingTop: currentUser ? "6rem" : "0",
         paddingBottom: currentUser ? "6rem" : "0",
+        backgroundImage: `url("https://www.transparenttextures.com/patterns/grid-me.png")`,
+        backgroundRepeat: "repeat",
+        backgroundSize: "auto",
       }}
     >
-      <img
+      {/* Left fade */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-[60vw] bg-gradient-to-r from-[#0F0F0F] to-transparent z-0" />
+
+      {/* Right fade */}
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-[60vw] bg-gradient-to-l from-[#0F0F0F] to-transparent z-0" />
+
+      {/* <img
         src={orb1}
         alt=""
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] blur-3xl opacity-20 pointer-events-none select-none"
-      />
+      /> */}
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-12">
