@@ -4,18 +4,20 @@ import { Menu, X } from "lucide-react";
 import ccalogo from "@/assets/ccalogo.png"; // adjust path if needed
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 import { auth, googleProvider } from "../firebase";
+import { useNavigate } from "react-router-dom";
 
 const navLinks = [
   { href: "#home", label: "Home" },
   { href: "#about", label: "About" },
   { href: "#cells", label: "Cells" },
   { href: "#aarohan", label: "Aarohan" },
-  { href: "#auditions", label: "Apply" },
+  { href: "/apply", label: "Apply" },
 ];
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,13 +27,22 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-    setIsMobileMenuOpen(false);
-  };
+  const handleNavigation = (href: string) => {
+  setIsMobileMenuOpen(false);
+
+  // If it's a route
+  if (href.startsWith("/")) {
+    navigate(href);
+    return;
+  }
+
+  // Otherwise it's a section anchor
+  const element = document.querySelector(href);
+  if (element) {
+    element.scrollIntoView({ behavior: "smooth" });
+  }
+};
+
 
   const [user, setUser] = useState(null);
 
@@ -67,7 +78,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4 flex items-center justify-between">
         {/* Logo */}
         <button
-          onClick={() => scrollToSection("#home")}
+          onClick={() => navigate("/")}
           className="flex items-center"
         >
           <img
@@ -82,7 +93,8 @@ const Navbar = () => {
           {navLinks.map((link) => (
             <button
               key={link.href}
-              onClick={() => scrollToSection(link.href)}
+              onClick={() => handleNavigation(link.href)}
+
               className="text-muted-foreground hover:text-[#a7c0d4] transition-colors duration-200 text-sm font-medium text-[#9facac]"
             >
               {link.label}
@@ -112,7 +124,7 @@ const Navbar = () => {
             {navLinks.map((link) => (
               <button
                 key={link.href}
-                onClick={() => scrollToSection(link.href)}
+                onClick={() => handleNavigation(link.href)}
                 className="text-muted-foreground hover:text-foreground transition-colors text-left py-2"
               >
                 {link.label}

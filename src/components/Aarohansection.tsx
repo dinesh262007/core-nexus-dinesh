@@ -92,8 +92,7 @@ const AarohanSection = () => {
     setActiveIndex((p) => (p === cards.length - 1 ? 0 : p + 1));
 
   const isSmallMobile = windowWidth <= 400;
-  const isMobile = windowWidth <= 768;
-  const isTablet = windowWidth > 768 && windowWidth <= 1024;
+  const isMobile = windowWidth <= 1024;
   const touchStartX = useRef(0);
 
   return (

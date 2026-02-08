@@ -1,9 +1,37 @@
 import { Instagram, Linkedin, Facebook, Twitter, Phone } from "lucide-react";
 import ccalogo from "../assets/cca logo white.png";
-const navLinks = ["Home", "About", "Cells", "Aarohan"];
-
+import { Link, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function Footer() {
+  const navLinks = [
+    { name: "Home", path: "/" },
+    { name: "About", path: "/#about" },
+    { name: "Cells", path: "/#cells" },
+    { name: "Aarohan", path: "/#aarohan" },
+    { name: "Apply", path: "/apply" },
+  ];
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const el = document.querySelector(location.hash);
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+      return;
+    }
+    if (location.pathname === "/") {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  }, [location]);
+
   return (
     <footer className="relative bg-[#141313] text-[#efefef] overflow-hidden">
       {/* Upper content */}
@@ -23,13 +51,13 @@ export default function Footer() {
           {/* Navigation */}
           <nav className="col-span-1 row-span-1 md:col-span-3 space-y-3 md:space-y-4 text-xs sm:text-sm font-light tracking-widest text-center md:text-left self-center">
             {navLinks.map((item) => (
-              <a
-                key={item}
-                href="#"
+              <Link
+                key={item.name}
+                to={item.path}
                 className="block text-[#bebcbc] hover:text-[#efefef] transition"
               >
-                {item}
-              </a>
+                {item.name}
+              </Link>
             ))}
           </nav>
 

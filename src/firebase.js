@@ -7,7 +7,6 @@ import {
   setPersistence,
   browserLocalPersistence,
 } from "firebase/auth";
-
 /* ---------------- FIREBASE CONFIG ---------------- */
 
 const firebaseConfig = {
@@ -40,3 +39,6 @@ export const db = getFirestore(app);
 
 export const analytics =
   typeof window !== "undefined" ? getAnalytics(app) : null;
+
+
+  

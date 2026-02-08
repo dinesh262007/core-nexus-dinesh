@@ -1,11 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import HeroBg from "../assets/site-bg.png";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
   const scrollTo = (id: string) => {
     document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
   };
+  const navigate = useNavigate();
 
   return (
     <section
@@ -59,7 +61,7 @@ const HeroSection = () => {
                   backgroundColor: "#0F0F0F",
                   color: "#efefef",
                 }}
-                onClick={() => scrollTo("#auditions")}
+                onClick={() => navigate("/apply")}
               >
                 Apply Now
                 <ArrowRight className="ml-2 w-5 h-5" />
