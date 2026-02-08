@@ -10,7 +10,6 @@ import {
   collection,
   addDoc,
   serverTimestamp,
-  setDoc,
 } from "firebase/firestore";
 import {
   Select,
@@ -245,9 +244,46 @@ const AuditionForm = () => {
     try {
       console.log("form data: ", formData);
       await addDoc(collection(db, "audition_applications"), {
-        ...formData,
         uid: currentUser.uid,
+        name: formData.name,
         email: currentUser.email,
+        rollNumber: formData.rollNumber,
+        phone: formData.phone,
+        gender: formData.gender,
+        department: formData.department,
+        cgpa: formData.cgpa,
+        placeOfOrigin: formData.placeOfOrigin,
+
+        preferredCells: formData.preferredCells,
+
+        answers: {
+          whyCCA: formData.whyCCA,
+          suitability: formData.suitability,
+
+          core: formData.preferredCells.includes("core")
+            ? formData.managerialExperience
+            : null,
+
+          robo: formData.preferredCells.includes("robo")
+            ? formData.roboticsInterest
+            : null,
+
+          rnd: formData.preferredCells.includes("rnd")
+            ? formData.researchInterest
+            : null,
+
+          wdct: formData.preferredCells.includes("wdct")
+            ? formData.webDesignSkills
+            : null,
+
+          ecell: formData.preferredCells.includes("ecell")
+            ? formData.entrepreneurshipKnowledge
+            : null,
+
+          aarohanContribution: formData.aarohanContribution,
+          aarohanThemeIdea: formData.aarohanThemeIdea,
+        },
+
         createdAt: serverTimestamp(),
       });
 
@@ -454,7 +490,7 @@ const AuditionForm = () => {
       }
 
       // roll format (NITD style)
-      if (/^(24|25|26)[A-Za-z]{2}\d{4,5}$/.test(rollNumber)) {
+      if (!/^(24|25|26)[A-Za-z]{2}\d{4,5}$/.test(rollNumber)) {
         toast({
           title: "Invalid Roll Number",
           description: "Format should be like 25CS1234",

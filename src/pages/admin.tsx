@@ -144,10 +144,63 @@ import { db, auth } from "../firebase";
 import { collection, query, orderBy, getDocs } from "firebase/firestore";
 import { exportApplicationsByCell } from "../lib/exportResponses";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import Papa from "papaparse";
+
+export const exportApplicationsByCell = async () => {
+  const q = query(
+    collection(db, "audition_applications"),
+    orderBy("createdAt", "desc"),
+  );
+
+  const snapshot = await getDocs(q);
+
+  const rows = snapshot.docs.map((doc) => {
+    const app = doc.data();
+    const answers = app.answers || {};
+
+    return {
+      Name: app.name || "",
+      Email: app.email || "",
+      "Roll Number": app.rollNumber || "",
+      Department: app.department || "",
+      Gender: app.gender || "",
+      Phone: app.phone || "",
+      CGPA: app.cgpa || "",
+      "Preferred Cells": (app.preferredCells || []).join(", "),
+
+      "Why CCA": answers.whyCCA || "",
+      Suitability: answers.suitability || "",
+
+      "Core Answer": answers.core || "",
+      "Robo Answer": answers.robo || "",
+      "RND Answer": answers.rnd || "",
+      "WDCT Answer": answers.wdct || "",
+      "E-Cell Answer": answers.ecell || "",
+
+      "AAROHAN Contribution": answers.aarohanContribution || "",
+      "AAROHAN Theme Idea": answers.aarohanThemeIdea || "",
+
+      "Submitted At": app.createdAt?.toDate
+        ? app.createdAt.toDate().toLocaleString()
+        : "",
+    };
+  });
+
+  const csv = Papa.unparse(rows);
+
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.setAttribute("download", "CCA_Auditions_All_Applications.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 import { signOut } from "firebase/auth";
 
 const CELLS = ["wdct", "robo", "core", "ecell", "rnd"];
-
 
 export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -207,6 +260,11 @@ export default function Admin() {
 
     fetchApplications();
   }, [isAuthenticated]);
+
+  const getCellAnswer = (app, cell) => {
+    if (!app.answers) return "-";
+    return app.answers[cell] || "-";
+  };
 
   /* 🔐 LOGIN */
   if (!isAuthenticated) {
@@ -298,7 +356,7 @@ export default function Admin() {
 
           <Button
             variant="secondary"
-            onClick={() => exportApplicationsByCell(selectedCell)}
+            onClick={exportApplicationsByCell}
           >
             Download CSV
           </Button>
@@ -320,12 +378,13 @@ export default function Admin() {
             <thead className="bg-muted">
               <tr>
                 <th className="p-3 text-left">Name</th>
-                <th className="p-3 text-left">Email</th>
-                <th className="p-3 text-left">Roll No</th>
-                <th className="p-3 text-left">Phone</th>
-                <th className="p-3 text-left">Gender</th>
+                <th className="p-3 text-left">Roll</th>
                 <th className="p-3 text-left">Dept</th>
-                <th className="p-3 text-left">Motivation</th>
+                <th className="p-3 text-left">Why CCA</th>
+                <th className="p-3 text-left">Suitability</th>
+                <th className="p-3 text-left">
+                  {selectedCell.toUpperCase()} Answer
+                </th>
                 <th className="p-3 text-left">Submitted At</th>
               </tr>
             </thead>
@@ -334,14 +393,21 @@ export default function Admin() {
               {filteredApps.map((app) => (
                 <tr key={app.id} className="border-t align-top">
                   <td className="p-3">{app.name}</td>
-                  <td className="p-3">{app.email}</td>
                   <td className="p-3">{app.rollNumber}</td>
-                  <td className="p-3">{app.phone || "-"}</td>
-                  <td className="p-3 capitalize">{app.gender}</td>
                   <td className="p-3 uppercase">{app.department}</td>
+
                   <td className="p-3 max-w-xs whitespace-pre-wrap">
-                    {app.motivation}
+                    {app.answers?.whyCCA || "-"}
                   </td>
+
+                  <td className="p-3 max-w-xs whitespace-pre-wrap">
+                    {app.answers?.suitability || "-"}
+                  </td>
+
+                  <td className="p-3 max-w-md whitespace-pre-wrap">
+                    {getCellAnswer(app, selectedCell)}
+                  </td>
+
                   <td className="p-3">
                     {app.createdAt?.toDate
                       ? app.createdAt.toDate().toLocaleString()
