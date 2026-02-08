@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import ccalogo from "@/assets/ccalogo.png"; // adjust path if needed
@@ -34,6 +35,7 @@ const Navbar = () => {
   };
 
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -43,12 +45,17 @@ const Navbar = () => {
   }, []);
 
   const handleSignIn = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
-    } catch (err) {
-      console.error("Sign-in error:", err);
-    }
-  };
+  try {
+    await signInWithPopup(auth, googleProvider);
+
+    // ✅ Open audition form page after login
+    navigate("/auditionform");
+
+  } catch (err) {
+    console.error("Sign-in error:", err);
+  }
+};
+
 
   const handleSignOut = async () => {
     try {

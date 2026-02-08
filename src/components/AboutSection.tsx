@@ -30,15 +30,17 @@ const features = [
 const AboutSection = () => {
   return (
     <section
-      id="about"
-      className="
-        relative z-20
-        -mt-[clamp(3rem,14vw,6rem)]
-        pt-[clamp(6rem,14vw,10rem)]
-        pb-24
-        overflow-hidden
-      "
-    >
+  id="about"
+  
+  className="
+    relative z-20
+    -mt-[clamp(3rem,14vw,6rem)]
+    pt-[clamp(6rem,14vw,10rem)]
+    pb-24
+    overflow-hidden
+  "
+>
+
       {/* ANGLED DARK BRIDGE */}
       <div
         className="absolute inset-0 z-[-1]"

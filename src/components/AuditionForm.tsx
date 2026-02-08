@@ -73,7 +73,18 @@ const AuditionForm = () => {
     gender: "",
     preferredCells: [],
     department: "",
-    motivation: "",
+    /*--motivation: "",--*/
+    cgpa: "",
+  placeOfOrigin: "",
+  whyCCA: "",
+  suitability: "",
+  managerialExperience: "",
+  roboticsInterest: "",
+  researchInterest: "",
+  webDesignSkills: "",
+  entrepreneurshipKnowledge: "",
+  aarohanContribution: "",
+  aarohanThemeIdea: "",
   });
 
   /* -------------------- AUTH LISTENER -------------------- */
@@ -124,7 +135,7 @@ const AuditionForm = () => {
       gender,
       preferredCells,
       department,
-      motivation,
+      
     } = formData;
 
     if (
@@ -135,7 +146,18 @@ const AuditionForm = () => {
       !gender ||
       !preferredCells.length ||
       !department ||
-      !motivation
+      !formData.cgpa ||
+      !formData.placeOfOrigin ||
+      !formData.whyCCA ||
+      !formData.suitability ||
+      !formData.managerialExperience ||
+      !formData.roboticsInterest ||
+      !formData.researchInterest ||
+      !formData.webDesignSkills ||
+      !formData.entrepreneurshipKnowledge ||
+      !formData.aarohanContribution ||
+      !formData.aarohanThemeIdea
+      
     ) {
       toast({
         title: "Missing fields",
@@ -193,7 +215,7 @@ const AuditionForm = () => {
               Thank you for applying to CCA.
               <br />
               <a
-                href="https://chat.whatsapp.com/K6u1mYk1v3pQn"
+                href="https://chat.whatsapp.com/IR4DQXW83k34gWm6ur2aFe?mode=gi_t"
                 target="_blank"
                 rel="noreferrer"
                 className="underline"
@@ -366,6 +388,30 @@ const AuditionForm = () => {
                 </div>
               </div>
             </div>
+            <div className="grid md:grid-cols-2 gap-4">
+  <div className="space-y-2">
+    <Label>CGPA</Label>
+    <Input
+      name="cgpa"
+      placeholder="e.g. 8.45"
+      value={formData.cgpa}
+      onChange={handleInputChange}
+      className={inputStyle}
+    />
+  </div>
+
+  <div className="space-y-2">
+    <Label>Place of Origin</Label>
+    <Input
+      name="placeOfOrigin"
+      placeholder="City, State"
+      value={formData.placeOfOrigin}
+      onChange={handleInputChange}
+      className={inputStyle}
+    />
+  </div>
+</div>
+
 
             {/* Preferred Cells UI */}
             <div className="space-y-3">
@@ -406,16 +452,100 @@ const AuditionForm = () => {
               </div>
             </div>
 
-            {/* Motivation */}
-            <h4>Why CCA?</h4>
-            <Textarea
-              name="motivation"
-              rows={4}
-              value={formData.motivation}
-              onChange={handleInputChange}
-              placeholder="Why do you want to join?"
-              className={inputStyle}
-            />
+            
+            <Label>
+  Why do you want to join the Centre for Cognitive Activities (CCA)?
+</Label>
+<Textarea
+  name="whyCCA"
+  rows={4}
+  value={formData.whyCCA}
+  onChange={handleInputChange}
+  className={inputStyle}
+/>
+<Label>
+  What according to you makes you suitable for being a member of CCA?
+</Label>
+<Textarea
+  name="suitability"
+  rows={4}
+  value={formData.suitability}
+  onChange={handleInputChange}
+  className={inputStyle}
+/>
+<Label>
+  Do you have any previous managerial experience or event involvement?
+</Label>
+<Textarea
+  name="managerialExperience"
+  rows={4}
+  value={formData.managerialExperience}
+  onChange={handleInputChange}
+  className={inputStyle}
+/>
+<Label>
+  Does robotics interest you? What level of knowledge do you have?
+</Label>
+<Textarea
+  name="roboticsInterest"
+  rows={4}
+  value={formData.roboticsInterest}
+  onChange={handleInputChange}
+  className={inputStyle}
+/>
+<Label>
+  Do you have any research interests or projects in mind?
+</Label>
+<Textarea
+  name="researchInterest"
+  rows={4}
+  value={formData.researchInterest}
+  onChange={handleInputChange}
+  className={inputStyle}
+/>
+<Label>
+  Can you build a website or use any designing software?
+</Label>
+<Textarea
+  name="webDesignSkills"
+  rows={4}
+  value={formData.webDesignSkills}
+  onChange={handleInputChange}
+  className={inputStyle}
+/>
+<Label>
+  What do you know about entrepreneurship?
+</Label>
+<Textarea
+  name="entrepreneurshipKnowledge"
+  rows={4}
+  value={formData.entrepreneurshipKnowledge}
+  onChange={handleInputChange}
+  className={inputStyle}
+/>
+<Label>
+  How would you like to contribute to AAROHAN 2026? Expectations?
+</Label>
+<Textarea
+  name="aarohanContribution"
+  rows={4}
+  value={formData.aarohanContribution}
+  onChange={handleInputChange}
+  className={inputStyle}
+/>
+<Label>
+  Suggest a theme and logo idea for AAROHAN 2026
+</Label>
+<Textarea
+  name="aarohanThemeIdea"
+  rows={4}
+  value={formData.aarohanThemeIdea}
+  onChange={handleInputChange}
+  className={inputStyle}
+/>
+
+
+
 
             <Button
               type="submit"
