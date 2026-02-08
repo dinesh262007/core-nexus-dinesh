@@ -502,7 +502,7 @@ const AuditionForm = () => {
       }
 
       // roll format (NITD style)
-      if (!/^(24|25|26)[A-Za-z]{2}\d{4,5}$/.test(rollNumber)) {
+      if (!/^(24|25|26)[A-Za-z]{1,2}\d{4,5}$/.test(rollNumber)) {
         toast({
           title: "Invalid Roll Number",
           description: "Format should be like 25CS1234",
