@@ -315,7 +315,7 @@ const AuditionForm = () => {
       <section className="bg-[#0F0F0F] min-h-screen flex items-center justify-center">
         <div className="w-full px-4">
           <div className="max-w-xl mx-auto text-center bg-[#161616] p-10 rounded-2xl border border-white/10">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-green-500/10 flex items-center justify-center">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-green-500/90 flex items-center justify-center">
               <CheckCircle className="w-10 h-10 text-white" />
             </div>
             <h2 className="text-3xl font-bold text-white mb-4">
@@ -330,7 +330,7 @@ const AuditionForm = () => {
                 rel="noreferrer"
                 className="underline hover:opacity-80 block mt-2 break-all"
               >
-                https://chat.whatsapp.com/IR4DQXW83k34gWm6ur2aFe?mode=gi_t
+                Join whatsapp group
               </a>
             </p>
             <div className="mt-8">

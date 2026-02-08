@@ -142,7 +142,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { db, auth } from "../firebase";
 import { collection, query, orderBy, getDocs } from "firebase/firestore";
-import { exportApplicationsByCell } from "../lib/exportResponses";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import Papa from "papaparse";
 
